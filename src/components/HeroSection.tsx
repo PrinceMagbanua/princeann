@@ -1,11 +1,18 @@
-import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import heroCoupleImage from "@/assets/hero-couple.jpg";
+import { Button } from "./ui/button";
 
 const HeroSection = () => {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+  const scrollToRSVP = () => {
+    const rsvpSection = document.getElementById("rsvp-section");
+    if (rsvpSection) {
+      rsvpSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <section className="relative h-screen overflow-hidden">
@@ -60,9 +67,16 @@ const HeroSection = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <p className="text-lg font-light tracking-wide md:text-xl">
+            <p className="mb-8 text-lg font-light tracking-wide md:text-xl">
               Join us in celebrating our love
             </p>
+            <Button
+              onClick={scrollToRSVP}
+              size="lg"
+              className="bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm"
+            >
+              RSVP Now
+            </Button>
           </motion.div>
         </div>
       </motion.div>

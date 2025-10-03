@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, Check, Users } from "lucide-react";
+import { Search, Check, Users, ArrowLeft } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
@@ -69,7 +69,7 @@ const RSVPSection = () => {
   };
 
   return (
-    <section className="py-20 px-4 bg-background">
+    <section id="rsvp-section" className="py-20 px-4 bg-background">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -109,7 +109,7 @@ const RSVPSection = () => {
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="mb-8 max-h-60 overflow-y-auto rounded-lg border bg-secondary/20 p-4"
+                  className="mb-8 rounded-lg border bg-secondary/20 p-4"
                 >
                   {uniqueGroups.map((guest) => (
                     <button
@@ -135,9 +135,23 @@ const RSVPSection = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="mb-8"
                 >
-                  <h3 className="mb-4 text-xl font-semibold">
-                    Who will be attending?
-                  </h3>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-semibold">
+                      Who will be attending?
+                    </h3>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedGroup(null);
+                        setAttendingMembers([]);
+                      }}
+                      className="gap-2"
+                    >
+                      <ArrowLeft className="h-4 w-4" />
+                      Back to search
+                    </Button>
+                  </div>
                   <div className="space-y-3">
                     {selectedGroup.map((member) => (
                       <div
