@@ -4,10 +4,10 @@ import { Card } from "./ui/card";
 
 const AttireSection = () => {
   const colorPalette = [
+    { name: "Dark Sage", color: "hsl(140, 28%, 35%)" },
     { name: "Sage Green", color: "hsl(140, 28%, 45%)" },
-    { name: "Champagne", color: "hsl(45, 35%, 82%)" },
-    { name: "Blush", color: "hsl(350, 35%, 85%)" },
-    { name: "Ivory", color: "hsl(45, 20%, 95%)" },
+    { name: "Light Sage", color: "hsl(140, 20%, 75%)" },
+    { name: "Ivory", color: "hsl(0, 0%, 98%)" },
   ];
 
   return (
@@ -65,7 +65,7 @@ const AttireSection = () => {
               We'd love for you to incorporate these beautiful colors into your attire. 
               Feel free to mix and match or choose your favorite!
             </p>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="flex gap-3 justify-center flex-wrap">
               {colorPalette.map((color, index) => (
                 <motion.div
                   key={color.name}
@@ -73,14 +73,14 @@ const AttireSection = () => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.1 }}
                   className="text-center"
                 >
                   <div
-                    className="mb-3 aspect-square w-full rounded-xl shadow-lg ring-2 ring-border transition-transform"
+                    className="h-16 w-16 rounded-full shadow-lg ring-2 ring-border transition-transform mb-2"
                     style={{ backgroundColor: color.color }}
                   />
-                  <p className="font-medium">{color.name}</p>
+                  <p className="text-xs font-medium">{color.name}</p>
                 </motion.div>
               ))}
             </div>

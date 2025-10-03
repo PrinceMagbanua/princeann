@@ -98,6 +98,24 @@ const EventDetails = () => {
               <p className="mt-2 text-sm text-muted-foreground">
                 123 Wedding Lane, Paradise Valley
               </p>
+              <div className="mt-4 flex gap-3 justify-center">
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Garden+Estate+Venue+123+Wedding+Lane+Paradise+Valley"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-all hover:scale-105 hover:shadow-lg"
+                >
+                  Google Maps
+                </a>
+                <a
+                  href="https://waze.com/ul?q=Garden+Estate+Venue+123+Wedding+Lane+Paradise+Valley"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-all hover:scale-105 hover:shadow-lg"
+                >
+                  Waze
+                </a>
+              </div>
             </Card>
           </motion.div>
         </div>
