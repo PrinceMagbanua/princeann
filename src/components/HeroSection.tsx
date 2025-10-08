@@ -6,6 +6,7 @@ const HeroSection = () => {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const maskY = useTransform(scrollY, [0, 300], ["0%", "100%"]);
 
   const scrollToRSVP = () => {
     const rsvpSection = document.getElementById("rsvp-section");
@@ -14,23 +15,66 @@ const HeroSection = () => {
     }
   };
 
+  // Generate confetti circles for mask
+  const confettiCircles = Array.from({ length: 40 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    delay: Math.random() * 0.8,
+    size: 20 + Math.random() * 40,
+  }));
+
   return (
     <section className="relative h-screen overflow-hidden">
-      {/* Parallax Background Image */}
+      {/* SVG Mask Definition */}
+      <svg className="absolute inset-0 w-0 h-0">
+        <defs>
+          <mask id="confetti-mask">
+            <rect width="100%" height="100%" fill="white" />
+            {confettiCircles.map((circle) => (
+              <motion.circle
+                key={circle.id}
+                cx={`${circle.x}%`}
+                cy="0%"
+                r={circle.size}
+                fill="black"
+                initial={{ cy: "-10%", opacity: 1 }}
+                animate={{ cy: "110%", opacity: 0 }}
+                transition={{
+                  duration: 2 + Math.random(),
+                  delay: circle.delay,
+                  ease: "easeIn",
+                }}
+              />
+            ))}
+          </mask>
+        </defs>
+      </svg>
+
+      {/* Parallax Background Image with Mask */}
       <motion.div
         style={{ y }}
         className="absolute inset-0 parallax"
       >
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
           className="absolute inset-0 bg-cover bg-center scale-110"
           style={{
             backgroundImage: `url(${heroCoupleImage})`,
+            maskImage: "url(#confetti-mask)",
+            WebkitMaskImage: "url(#confetti-mask)",
           }}
         />
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
           className="absolute inset-0"
           style={{
             background: "var(--gradient-hero)",
+            maskImage: "url(#confetti-mask)",
+            WebkitMaskImage: "url(#confetti-mask)",
           }}
         />
       </motion.div>
