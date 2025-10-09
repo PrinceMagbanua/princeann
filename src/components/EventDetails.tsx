@@ -36,85 +36,155 @@ const EventDetails = () => {
             The Celebration
           </h2>
           <p className="text-lg text-muted-foreground">
-            We invite you to share in our special day
+            Join us as we exchange vows and celebrate our love
           </p>
         </motion.div>
 
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="space-y-12">
+          {/* Church Ceremony */}
           <motion.div variants={itemVariants}>
-            <Card className="group h-full border-none bg-card p-8 text-center shadow-lg transition-all hover:scale-105 hover:shadow-xl">
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-                className="mb-6 flex justify-center"
-              >
-                <div className="rounded-full bg-primary/10 p-4">
-                  <Calendar className="h-8 w-8 text-primary" />
+            <Card className="border-none bg-card p-8 md:p-10 shadow-xl">
+              <div className="grid gap-6 md:grid-cols-3 text-center md:text-left">
+                <div className="flex flex-col items-center md:items-start">
+                  <motion.div
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-4"
+                  >
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <Calendar className="h-8 w-8 text-primary" />
+                    </div>
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-2">Date</h3>
+                  <p className="text-muted-foreground">
+                    Saturday, February 7, 2026
+                  </p>
                 </div>
-              </motion.div>
-              <h3 className="mb-3 text-2xl font-semibold">Date</h3>
-              <p className="text-lg text-muted-foreground">
-                Saturday, June 15, 2024
-              </p>
+
+                <div className="flex flex-col items-center md:items-start">
+                  <motion.div
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-4"
+                  >
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <Clock className="h-8 w-8 text-primary" />
+                    </div>
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-2">Church Ceremony</h3>
+                  <p className="text-lg font-medium text-primary">1:30 PM</p>
+                </div>
+
+                <div className="flex flex-col items-center md:items-start">
+                  <motion.div
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-4"
+                  >
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <MapPin className="h-8 w-8 text-primary" />
+                    </div>
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-2">Location</h3>
+                  <p className="text-muted-foreground mb-1">
+                    Sacred Heart Of Jesus Parish
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Muntinlupa
+                  </p>
+                  <div className="flex gap-2 flex-wrap justify-center md:justify-start">
+                    <a
+                      href="https://maps.app.goo.gl/VJ1KjEXoYPBhK1wW7"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-all hover:scale-105 hover:shadow-lg"
+                    >
+                      Google Maps
+                    </a>
+                    <a
+                      href="https://waze.com/ul?ll=14.4086,121.0398&navigate=yes"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-all hover:scale-105 hover:shadow-lg"
+                    >
+                      Waze
+                    </a>
+                  </div>
+                </div>
+              </div>
             </Card>
           </motion.div>
 
+          {/* Wedding Reception */}
           <motion.div variants={itemVariants}>
-            <Card className="group h-full border-none bg-card p-8 text-center shadow-lg transition-all hover:scale-105 hover:shadow-xl">
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-                className="mb-6 flex justify-center"
-              >
-                <div className="rounded-full bg-primary/10 p-4">
-                  <Clock className="h-8 w-8 text-primary" />
+            <Card className="border-none bg-card p-8 md:p-10 shadow-xl">
+              <div className="grid gap-6 md:grid-cols-3 text-center md:text-left">
+                <div className="flex flex-col items-center md:items-start">
+                  <motion.div
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-4"
+                  >
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <Calendar className="h-8 w-8 text-primary" />
+                    </div>
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-2">Date</h3>
+                  <p className="text-muted-foreground">
+                    Saturday, February 7, 2026
+                  </p>
                 </div>
-              </motion.div>
-              <h3 className="mb-3 text-2xl font-semibold">Time</h3>
-              <p className="text-lg text-muted-foreground">
-                4:00 PM
-              </p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Ceremony followed by reception
-              </p>
-            </Card>
-          </motion.div>
 
-          <motion.div variants={itemVariants}>
-            <Card className="group h-full border-none bg-card p-8 text-center shadow-lg transition-all hover:scale-105 hover:shadow-xl">
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-                className="mb-6 flex justify-center"
-              >
-                <div className="rounded-full bg-primary/10 p-4">
-                  <MapPin className="h-8 w-8 text-primary" />
+                <div className="flex flex-col items-center md:items-start">
+                  <motion.div
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-4"
+                  >
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <Clock className="h-8 w-8 text-primary" />
+                    </div>
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-2">Wedding Reception</h3>
+                  <p className="text-lg font-medium text-primary">4:00 PM</p>
                 </div>
-              </motion.div>
-              <h3 className="mb-3 text-2xl font-semibold">Location</h3>
-              <p className="text-lg text-muted-foreground">
-                Garden Estate Venue
-              </p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                123 Wedding Lane, Paradise Valley
-              </p>
-              <div className="mt-4 flex gap-3 justify-center">
-                <a
-                  href="https://www.google.com/maps/search/?api=1&query=Garden+Estate+Venue+123+Wedding+Lane+Paradise+Valley"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-all hover:scale-105 hover:shadow-lg"
-                >
-                  Google Maps
-                </a>
-                <a
-                  href="https://waze.com/ul?q=Garden+Estate+Venue+123+Wedding+Lane+Paradise+Valley"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-all hover:scale-105 hover:shadow-lg"
-                >
-                  Waze
-                </a>
+
+                <div className="flex flex-col items-center md:items-start">
+                  <motion.div
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-4"
+                  >
+                    <div className="rounded-full bg-primary/10 p-4">
+                      <MapPin className="h-8 w-8 text-primary" />
+                    </div>
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-2">Location</h3>
+                  <p className="text-muted-foreground mb-1">
+                    Hampton Court
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Hillsborough Village, Muntinlupa
+                  </p>
+                  <div className="flex gap-2 flex-wrap justify-center md:justify-start">
+                    <a
+                      href="https://maps.app.goo.gl/7nGpDrZPyCf8wumy7"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-all hover:scale-105 hover:shadow-lg"
+                    >
+                      Google Maps
+                    </a>
+                    <a
+                      href="https://waze.com/ul?ll=14.4378,121.0416&navigate=yes"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground transition-all hover:scale-105 hover:shadow-lg"
+                    >
+                      Waze
+                    </a>
+                  </div>
+                </div>
               </div>
             </Card>
           </motion.div>

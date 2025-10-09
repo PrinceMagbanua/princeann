@@ -22,46 +22,25 @@ const VenueSection = () => {
 
   return (
     <section ref={containerRef} className="relative h-[600px] overflow-hidden">
-      {/* SVG Mask for Venue */}
-      <svg className="absolute inset-0 w-0 h-0">
-        <defs>
-          <mask id="venue-confetti-mask">
-            <rect width="100%" height="100%" fill="white" />
-            {confettiCircles.map((circle) => {
-              const circleY = useTransform(scrollYProgress, [0, 0.5], [circle.initialY, 110]);
-              return (
-                <motion.circle
-                  key={circle.id}
-                  cx={`${circle.x}%`}
-                  cy={circleY as any}
-                  r={25 + Math.random() * 30}
-                  fill="black"
-                />
-              );
-            })}
-          </mask>
-        </defs>
-      </svg>
-
       <motion.div
         style={{ y, scale }}
         className="absolute inset-0"
       >
         <motion.img
           src={venueImage}
-          alt="Garden Estate Venue"
+          alt="Hampton Court Venue"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
           className="h-full w-full object-cover"
-          style={{
-            maskImage: "url(#venue-confetti-mask)",
-            WebkitMaskImage: "url(#venue-confetti-mask)",
-          }}
         />
         <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.3 }}
           className="absolute inset-0 bg-gradient-to-b from-hero-overlay/40 via-transparent to-hero-overlay/40"
-          style={{
-            maskImage: "url(#venue-confetti-mask)",
-            WebkitMaskImage: "url(#venue-confetti-mask)",
-          }}
         />
       </motion.div>
 

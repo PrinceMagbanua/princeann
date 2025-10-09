@@ -1,8 +1,10 @@
 import HeroSection from "@/components/HeroSection";
+import GreetingSection from "@/components/GreetingSection";
 import EventDetails from "@/components/EventDetails";
 import PhotoGallery from "@/components/PhotoGallery";
 import RSVPSection from "@/components/RSVPSection";
 import AttireSection from "@/components/AttireSection";
+import GiftsSection from "@/components/GiftsSection";
 import VenueSection from "@/components/VenueSection";
 import Footer from "@/components/Footer";
 import ParallaxBackground from "@/components/ParallaxBackground";
@@ -13,10 +15,12 @@ const Index = () => {
       <ParallaxBackground />
       <div className="relative z-10">
         <HeroSection />
+        <GreetingSection />
         <EventDetails />
         <PhotoGallery />
         <RSVPSection />
         <AttireSection />
+        <GiftsSection />
         <VenueSection />
         <Footer />
       </div>
