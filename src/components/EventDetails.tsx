@@ -23,7 +23,7 @@ const EventDetails = () => {
   };
 
   return (
-    <section className="relative py-20 px-4" style={{ background: "var(--gradient-sage)" }}>
+    <section className="relative py-14 md:py-16 px-4" style={{ background: "var(--gradient-sage)" }}>
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -31,68 +31,34 @@ const EventDetails = () => {
         variants={containerVariants}
         className="container mx-auto max-w-5xl"
       >
-        <motion.div variants={itemVariants} className="mb-16 text-center">
-          <h2 className="mb-4 text-5xl font-bold text-foreground md:text-6xl">
-            The Celebration
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Join us as we exchange vows and celebrate our love
-          </p>
+        {/* Section heading with single date */}
+        <motion.div variants={itemVariants} className="mb-8 md:mb-10 text-center">
+          <h2 className="mb-2 text-4xl md:text-5xl font-bold text-foreground">The Celebration</h2>
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/50 px-4 py-2 text-sm md:text-base text-foreground shadow-sm ring-1 ring-white/30 backdrop-blur">
+            <Calendar className="h-4 w-4 text-primary" />
+            <span>Saturday, February 7, 2026</span>
+          </div>
         </motion.div>
 
-        <div className="space-y-12">
-          {/* Church Ceremony */}
-          <motion.div variants={itemVariants}>
-            <Card className="border-none bg-card p-8 md:p-10 shadow-xl">
-              <div className="grid gap-6 md:grid-cols-3 text-center md:text-left">
-                <div className="flex flex-col items-center md:items-start">
-                  <motion.div
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                    className="mb-4"
-                  >
-                    <div className="rounded-full bg-primary/10 p-4">
-                      <Calendar className="h-8 w-8 text-primary" />
-                    </div>
-                  </motion.div>
-                  <h3 className="text-xl font-semibold mb-2">Date</h3>
-                  <p className="text-muted-foreground">
-                    Saturday, February 7, 2026
-                  </p>
-                </div>
-
-                <div className="flex flex-col items-center md:items-start">
-                  <motion.div
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                    className="mb-4"
-                  >
-                    <div className="rounded-full bg-primary/10 p-4">
-                      <Clock className="h-8 w-8 text-primary" />
-                    </div>
-                  </motion.div>
-                  <h3 className="text-xl font-semibold mb-2">Church Ceremony</h3>
-                  <p className="text-lg font-medium text-primary">1:30 PM</p>
-                </div>
-
-                <div className="flex flex-col items-center md:items-start">
-                  <motion.div
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                    className="mb-4"
-                  >
-                    <div className="rounded-full bg-primary/10 p-4">
-                      <MapPin className="h-8 w-8 text-primary" />
-                    </div>
-                  </motion.div>
-                  <h3 className="text-xl font-semibold mb-2">Location</h3>
-                  <p className="text-muted-foreground mb-1">
-                    Sacred Heart Of Jesus Parish
-                  </p>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Muntinlupa
-                  </p>
-                  <div className="flex gap-2 flex-wrap justify-center md:justify-start">
+        {/* Single compact card with two columns */}
+        <motion.div variants={itemVariants}>
+          <Card className="border-none bg-card/90 p-6 md:p-8 shadow-2xl">
+            <div className="grid gap-6 md:gap-10 md:grid-cols-2">
+              {/* Church Ceremony */}
+              <div className="flex items-start gap-4">
+                <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.6 }}>
+                  <div className="rounded-full bg-primary/10 p-3 md:p-4">
+                    <Clock className="h-6 w-6 md:h-7 md:w-7 text-primary" />
+                  </div>
+                </motion.div>
+                <div className="flex-1">
+                  <h3 className="text-lg md:text-xl font-semibold mb-1">Church Ceremony</h3>
+                  <p className="text-primary font-medium mb-2 md:mb-3">1:30 PM</p>
+                  <div className="text-muted-foreground">
+                    <p className="mb-1">Sacred Heart Of Jesus Parish</p>
+                    <p className="text-sm">Muntinlupa</p>
+                  </div>
+                  <div className="mt-4 flex gap-2 flex-wrap">
                     <a
                       href="https://maps.app.goo.gl/VJ1KjEXoYPBhK1wW7"
                       target="_blank"
@@ -112,61 +78,22 @@ const EventDetails = () => {
                   </div>
                 </div>
               </div>
-            </Card>
-          </motion.div>
 
-          {/* Wedding Reception */}
-          <motion.div variants={itemVariants}>
-            <Card className="border-none bg-card p-8 md:p-10 shadow-xl">
-              <div className="grid gap-6 md:grid-cols-3 text-center md:text-left">
-                <div className="flex flex-col items-center md:items-start">
-                  <motion.div
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                    className="mb-4"
-                  >
-                    <div className="rounded-full bg-primary/10 p-4">
-                      <Calendar className="h-8 w-8 text-primary" />
-                    </div>
-                  </motion.div>
-                  <h3 className="text-xl font-semibold mb-2">Date</h3>
-                  <p className="text-muted-foreground">
-                    Saturday, February 7, 2026
-                  </p>
-                </div>
-
-                <div className="flex flex-col items-center md:items-start">
-                  <motion.div
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                    className="mb-4"
-                  >
-                    <div className="rounded-full bg-primary/10 p-4">
-                      <Clock className="h-8 w-8 text-primary" />
-                    </div>
-                  </motion.div>
-                  <h3 className="text-xl font-semibold mb-2">Wedding Reception</h3>
-                  <p className="text-lg font-medium text-primary">4:00 PM</p>
-                </div>
-
-                <div className="flex flex-col items-center md:items-start">
-                  <motion.div
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                    className="mb-4"
-                  >
-                    <div className="rounded-full bg-primary/10 p-4">
-                      <MapPin className="h-8 w-8 text-primary" />
-                    </div>
-                  </motion.div>
-                  <h3 className="text-xl font-semibold mb-2">Location</h3>
-                  <p className="text-muted-foreground mb-1">
-                    Hampton Court
-                  </p>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Hillsborough Village, Muntinlupa
-                  </p>
-                  <div className="flex gap-2 flex-wrap justify-center md:justify-start">
+              {/* Wedding Reception */}
+              <div className="flex items-start gap-4">
+                <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.6 }}>
+                  <div className="rounded-full bg-primary/10 p-3 md:p-4">
+                    <Clock className="h-6 w-6 md:h-7 md:w-7 text-primary" />
+                  </div>
+                </motion.div>
+                <div className="flex-1">
+                  <h3 className="text-lg md:text-xl font-semibold mb-1">Wedding Reception</h3>
+                  <p className="text-primary font-medium mb-2 md:mb-3">4:00 PM</p>
+                  <div className="text-muted-foreground">
+                    <p className="mb-1">Hampton Court</p>
+                    <p className="text-sm">Hillsborough Village, Muntinlupa</p>
+                  </div>
+                  <div className="mt-4 flex gap-2 flex-wrap">
                     <a
                       href="https://maps.app.goo.gl/7nGpDrZPyCf8wumy7"
                       target="_blank"
@@ -186,9 +113,9 @@ const EventDetails = () => {
                   </div>
                 </div>
               </div>
-            </Card>
-          </motion.div>
-        </div>
+            </div>
+          </Card>
+        </motion.div>
       </motion.div>
     </section>
   );

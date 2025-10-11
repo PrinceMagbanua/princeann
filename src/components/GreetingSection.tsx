@@ -29,7 +29,7 @@ const GreetingSection = () => {
             transition={{ duration: 0.8 }}
             className="relative h-[500px] flex items-center justify-center"
           >
-            <div className="relative w-full max-w-md">
+            <div className="relative w-full h-full max-w-md">
               {photos.map((photo, index) => {
                 const offset = index - currentIndex;
                 const absOffset = Math.abs(offset);
@@ -111,18 +111,13 @@ const GreetingSection = () => {
               className="space-y-4 text-lg text-muted-foreground leading-relaxed"
             >
               <p>
-                We are absolutely thrilled to celebrate this special moment with all of you! 
-                After nine beautiful years of love, laughter, and growing together, 
-                we're ready to begin the next chapter of our journey.
+                We’re so excited to celebrate this special moment with you. After 7 wonderful years of love and laughter, we’re ready to start our next chapter together.
               </p>
               <p>
-                This website holds everything you need to know about our big day. 
-                From the venue details to dress code suggestions, we've gathered 
-                all the important information to make your experience as wonderful as possible.
+                Here, you’ll find all the details about our big day — from the venue to what to wear — to help make things easy and fun for you.
               </p>
               <p className="font-medium text-primary">
-                Your presence means the world to us, and we can't wait to create 
-                unforgettable memories together. See you soon! ♡
+                Your presence means the world to us, Let's make unforgettable memories together. See you soon! ♡
               </p>
             </motion.div>
           </motion.div>

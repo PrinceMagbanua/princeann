@@ -16,8 +16,8 @@ const Index = () => {
       <div className="relative z-10">
         <HeroSection />
         <GreetingSection />
-        <EventDetails />
         <PhotoGallery />
+        <EventDetails />
         <RSVPSection />
         <AttireSection />
         <GiftsSection />
