@@ -1,12 +1,17 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import heroCoupleImage from "@/assets/hero-couple.jpg";
 import { Button } from "./ui/button";
 
 const HeroSection = () => {
   const { scrollY } = useScroll();
+  const smoothY = useSpring(scrollY, {
+    stiffness: 40,
+    damping: 20,
+    mass: 1.2,
+  });
   const y = useTransform(scrollY, [0, 500], [0, 150]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const maskY = useTransform(scrollY, [0, 300], ["0%", "100%"]);
+  const opacity = useTransform(smoothY, [0, 300], [1, 0]);
+  const maskY = useTransform(smoothY, [0, 300], ["0%", "100%"]);
 
   const scrollToRSVP = () => {
     const rsvpSection = document.getElementById("rsvp-section");
