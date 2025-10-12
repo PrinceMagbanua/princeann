@@ -24,7 +24,7 @@ const ParallaxBackground = () => {
         src={leaf1}
         alt=""
         initial={{ opacity: 0, scale: 0, rotate: -45 }}
-        animate={{ opacity: 0.1, scale: 1, rotate: 0 }}
+        animate={{ opacity: 0.5, scale: 1, rotate: 0 }}
         transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
         style={{ y: y1, rotate: rotate1 }}
         className="absolute -top-20 -left-20 w-64 h-64"
@@ -35,7 +35,7 @@ const ParallaxBackground = () => {
         src={leaf2}
         alt=""
         initial={{ opacity: 0, scale: 0, rotate: 45 }}
-        animate={{ opacity: 0.1, scale: 1, rotate: 0 }}
+        animate={{ opacity: 0.5, scale: 1, rotate: 0 }}
         transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
         style={{ y: y2, rotate: rotate2 }}
         className="absolute top-40 -right-32 w-80 h-80"
@@ -46,7 +46,7 @@ const ParallaxBackground = () => {
         src={leaf2}
         alt=""
         initial={{ opacity: 0, scale: 0, x: -50 }}
-        animate={{ opacity: 0.08, scale: 1, x: 0 }}
+        animate={{ opacity: 0.5, scale: 1, x: 0 }}
         transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
         style={{ y: y3 }}
         className="absolute top-1/3 -left-24 w-72 h-72"
@@ -57,7 +57,7 @@ const ParallaxBackground = () => {
         src={leaf1}
         alt=""
         initial={{ opacity: 0, scale: 0, x: 50 }}
-        animate={{ opacity: 0.08, scale: 1, x: 0 }}
+        animate={{ opacity: 0.5, scale: 1, x: 0 }}
         transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
         style={{ y: y4, rotate: rotate1 }}
         className="absolute top-1/2 -right-20 w-56 h-56"
@@ -68,7 +68,7 @@ const ParallaxBackground = () => {
         src={leaf1}
         alt=""
         initial={{ opacity: 0, scale: 0, rotate: -30 }}
-        animate={{ opacity: 0.1, scale: 1, rotate: 0 }}
+        animate={{ opacity: 0.5, scale: 1, rotate: 0 }}
         transition={{ duration: 1, delay: 1, ease: "easeOut" }}
         style={{ y: y2 }}
         className="absolute bottom-20 -left-28 w-96 h-96"
@@ -79,7 +79,7 @@ const ParallaxBackground = () => {
         src={leaf2}
         alt=""
         initial={{ opacity: 0, scale: 0, rotate: 30 }}
-        animate={{ opacity: 0.08, scale: 1, rotate: 0 }}
+        animate={{ opacity: 0.5, scale: 1, rotate: 0 }}
         transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
         style={{ y: y1, rotate: rotate2 }}
         className="absolute bottom-40 -right-24 w-64 h-64"

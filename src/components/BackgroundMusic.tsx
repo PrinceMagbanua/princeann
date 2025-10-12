@@ -11,7 +11,7 @@ const BackgroundMusic = () => {
     const audioElement = audioRef.current;
     if (!audioElement) return;
 
-    audioElement.volume = 0.15;
+    audioElement.volume = 0.1;
     audioElement.loop = true;
 
     const tryPlay = () => {
@@ -40,7 +40,7 @@ const BackgroundMusic = () => {
 
   const handleStart = () => {
     if (!audioRef.current) return;
-    audioRef.current.volume = 0.15;
+    audioRef.current.volume = 0.1;
     audioRef.current.play().then(() => {
       setShowOverlay(false);
     }).catch(() => {

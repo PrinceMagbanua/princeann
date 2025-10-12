@@ -39,56 +39,51 @@ const AttireSection = () => {
 
         <div className="space-y-8">
           <Card className="border-none bg-card p-8 shadow-xl md:p-10">
-            <h3 className="mb-4 text-2xl font-semibold">Dress Code</h3>
-            <div className="space-y-4 text-lg text-muted-foreground">
-              <p>
-                <strong className="text-foreground">Formal Attire</strong>
-              </p>
-              <p>
-                We invite you to dress in your finest formal wear. Think elegant evening gowns, 
-                cocktail dresses, suits, and tuxedos.
-              </p>
-              <div className="mt-6 rounded-lg bg-secondary/20 p-6">
-                <p className="mb-2 font-semibold text-foreground">Please Note:</p>
-                <ul className="list-inside list-disc space-y-2">
-                  <li>The ceremony will be outdoors on grass - choose footwear accordingly</li>
-                  <li>The venue has both indoor and outdoor spaces</li>
-                  <li>Evening temperatures may be cool - consider bringing a wrap or jacket</li>
-                </ul>
+            <div className="grid gap-8 md:gap-10 md:grid-cols-2 items-start">
+              {/* Dress Code */}
+              <div>
+                <h3 className="mb-4 text-2xl font-semibold">Dress Code</h3>
+                <div className="space-y-4 text-lg text-muted-foreground">
+                  <p>
+                    <strong className="text-foreground">Formal Attire</strong>
+                  </p>
+                  <p>
+                    We invite you to dress in your finest formal wear — elegant evening gowns, cocktail dresses, suits, or tuxedos.
+                  </p>
+                </div>
+                <div className="mt-6 rounded-lg bg-accent/20 p-4 text-sm text-muted-foreground">
+                  <p>
+                    <strong className="text-foreground">Kind note:</strong> Please avoid wearing white, ivory, or off-white to let our bride shine ✨
+                  </p>
+                </div>
               </div>
-            </div>
-          </Card>
 
-          <Card className="border-none bg-card p-8 shadow-xl md:p-10">
-            <h3 className="mb-6 text-2xl font-semibold">Color Palette</h3>
-            <p className="mb-6 text-lg text-muted-foreground">
-              We'd love for you to incorporate these beautiful colors into your attire. 
-              Feel free to mix and match or choose your favorite!
-            </p>
-            <div className="flex gap-3 justify-center flex-wrap">
-              {colorPalette.map((color, index) => (
-                <motion.div
-                  key={color.name}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.1 }}
-                  className="text-center"
-                >
-                  <div
-                    className="h-16 w-16 rounded-full shadow-lg ring-2 ring-border transition-transform mb-2"
-                    style={{ backgroundColor: color.color }}
-                  />
-                  <p className="text-xs font-medium">{color.name}</p>
-                </motion.div>
-              ))}
-            </div>
-            <div className="mt-8 rounded-lg bg-accent/30 p-6 text-center">
-              <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Friendly reminder:</strong> Please avoid wearing 
-                white, ivory, or off-white to allow our bride to shine ✨
-              </p>
+              {/* Color Palette */}
+              <div>
+                <h3 className="mb-4 text-2xl font-semibold">Color Palette</h3>
+                <p className="mb-4 text-base md:text-lg text-muted-foreground">
+                  Feel free to incorporate any of these hues into your look.
+                </p>
+                <div className="flex gap-3 justify-start md:justify-center flex-wrap">
+                  {colorPalette.map((color, index) => (
+                    <motion.div
+                      key={color.name}
+                      initial={{ opacity: 0, scale: 0.85 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.35, delay: index * 0.08 }}
+                      whileHover={{ scale: 1.08 }}
+                      className="text-center"
+                    >
+                      <div
+                        className="h-14 w-14 md:h-16 md:w-16 rounded-full shadow-lg ring-2 ring-border transition-transform mb-2"
+                        style={{ backgroundColor: color.color }}
+                      />
+                      <p className="text-xs font-medium">{color.name}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
             </div>
           </Card>
         </div>
