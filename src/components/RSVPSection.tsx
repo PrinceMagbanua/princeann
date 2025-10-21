@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Search, Check, Users, ArrowLeft } from "lucide-react";
 import { Button } from "./ui/button";
@@ -6,24 +6,57 @@ import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import { Checkbox } from "./ui/checkbox";
 import { toast } from "sonner";
+import { fetchRsvpList, updateAttendance, type RsvpRow } from "@/lib/rsvpApi";
 
-// Mock guest data - in a real app, this would come from a database
-const guestList = [
-  { id: 1, name: "John Smith", group: ["John Smith", "Jane Smith", "Emily Smith"], groupName: "The Smith Family" },
-  { id: 2, name: "Jane Smith", group: ["John Smith", "Jane Smith", "Emily Smith"], groupName: "The Smith Family" },
-  { id: 3, name: "Emily Smith", group: ["John Smith", "Jane Smith", "Emily Smith"], groupName: "The Smith Family" },
-  { id: 4, name: "Michael Johnson", group: ["Michael Johnson"], groupName: "Michael Johnson" },
-  { id: 5, name: "Sarah Williams", group: ["Sarah Williams", "David Williams"], groupName: "The Williams" },
-  { id: 6, name: "David Williams", group: ["Sarah Williams", "David Williams"], groupName: "The Williams" },
-  { id: 7, name: "Lisa Brown", group: ["Lisa Brown"], groupName: "Lisa Brown" },
-  { id: 8, name: "Robert Garcia", group: ["Robert Garcia", "Maria Garcia", "Carlos Garcia"], groupName: "The Garcia Family" },
-];
+type Group = {
+  groupId: string;
+  groupName: string;
+  members: { id: string; name: string; attendance?: string }[];
+  rows: RsvpRow[];
+};
 
 const RSVPSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedGroup, setSelectedGroup] = useState<string[] | null>(null);
+  const [selectedGroupRows, setSelectedGroupRows] = useState<RsvpRow[] | null>(null);
   const [attendingMembers, setAttendingMembers] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        setLoading(true);
+        const data = await fetchRsvpList();
+        // Group by GroupId
+        const map = new Map<string, RsvpRow[]>();
+        for (const r of data.rows) {
+          const key = String(r.GroupId || r.ID);
+          const arr = map.get(key) || [];
+          arr.push(r);
+          map.set(key, arr);
+        }
+        const gs: Group[] = Array.from(map.entries()).map(([groupId, rows]) => {
+          const groupName = (rows[0].GroupName && String(rows[0].GroupName).trim()) || rows[0].Name;
+          return {
+            groupId,
+            groupName,
+            members: rows.map((r) => ({ id: r.ID, name: r.Name, attendance: r.Attendance })),
+            rows,
+          };
+        });
+        setGroups(gs);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        toast.error(message || "Failed to load RSVP list");
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -32,22 +65,20 @@ const RSVPSection = () => {
     setSubmitted(false);
   };
 
-  const filteredGuests = searchQuery
-    ? guestList.filter((guest) =>
-        guest.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
+  const filteredGroups = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return [] as Group[];
+    return groups.filter((g) => {
+      if (g.groupName.toLowerCase().includes(q)) return true;
+      return g.members.some((m) => m.name.toLowerCase().includes(q));
+    });
+  }, [groups, searchQuery]);
 
-  // Remove duplicates by group
-  const uniqueGroups = Array.from(
-    new Map(
-      filteredGuests.map((guest) => [guest.groupName, guest])
-    ).values()
-  );
-
-  const handleSelectGuest = (guest: typeof guestList[0]) => {
-    setSelectedGroup(guest.group);
-    setAttendingMembers(guest.group);
+  const handleSelectGuest = (g: Group) => {
+    const memberNames = g.members.map((m) => m.name);
+    setSelectedGroup(memberNames);
+    setSelectedGroupRows(g.rows);
+    setAttendingMembers(memberNames);
     setSearchQuery("");
   };
 
@@ -59,13 +90,27 @@ const RSVPSection = () => {
     );
   };
 
-  const handleSubmit = () => {
-    if (attendingMembers.length === 0) {
+  const handleSubmit = async () => {
+    if (!selectedGroupRows || attendingMembers.length === 0) {
       toast.error("Please select at least one person attending");
       return;
     }
-    setSubmitted(true);
-    toast.success("RSVP submitted successfully!");
+    try {
+      setSubmitting(true);
+      // Update selected members to "Going"; leave others unchanged for now
+      for (const row of selectedGroupRows) {
+        if (attendingMembers.includes(row.Name)) {
+          await updateAttendance(row.ID, "Going");
+        }
+      }
+      setSubmitted(true);
+      toast.success("RSVP submitted successfully!");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message || "Failed to submit RSVP");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -105,23 +150,23 @@ const RSVPSection = () => {
                 </div>
               </div>
 
-              {searchQuery && uniqueGroups.length > 0 && (
+              {searchQuery && filteredGroups.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   className="mb-8 rounded-lg border bg-secondary/20 p-4"
                 >
-                  {uniqueGroups.map((guest) => (
+                  {filteredGroups.map((g) => (
                     <button
-                      key={guest.id}
-                      onClick={() => handleSelectGuest(guest)}
+                      key={g.groupId}
+                      onClick={() => handleSelectGuest(g)}
                       className="flex w-full items-center gap-3 rounded-md p-3 text-left transition-colors hover:bg-secondary"
                     >
                       <Users className="h-5 w-5 text-primary" />
                       <div>
-                        <p className="font-medium">{guest.groupName}</p>
+                        <p className="font-medium">{g.groupName}</p>
                         <p className="text-sm text-muted-foreground">
-                          {guest.group.length} {guest.group.length === 1 ? "person" : "people"}
+                          {g.members.length} {g.members.length === 1 ? "person" : "people"}
                         </p>
                       </div>
                     </button>
@@ -180,9 +225,10 @@ const RSVPSection = () => {
                   onClick={handleSubmit}
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                   size="lg"
+                  disabled={submitting}
                 >
                   <Check className="mr-2 h-5 w-5" />
-                  Confirm RSVP
+                  {submitting ? "Submitting..." : "Confirm RSVP"}
                 </Button>
               )}
             </>
