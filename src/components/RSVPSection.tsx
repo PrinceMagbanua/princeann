@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Search, Check, Users, ArrowLeft } from "lucide-react";
+import { Search, Users, User, ArrowLeft, Loader2, Check, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
-import { Checkbox } from "./ui/checkbox";
 import { toast } from "sonner";
 import { fetchRsvpList, updateAttendance, type RsvpRow } from "@/lib/rsvpApi";
 
@@ -21,9 +20,8 @@ const RSVPSection = () => {
   const [loading, setLoading] = useState(true);
   const [selectedGroup, setSelectedGroup] = useState<string[] | null>(null);
   const [selectedGroupRows, setSelectedGroupRows] = useState<RsvpRow[] | null>(null);
-  const [attendingMembers, setAttendingMembers] = useState<string[]>([]);
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const [rowLoading, setRowLoading] = useState<Record<string, boolean>>({});
+  const [attemptHistory, setAttemptHistory] = useState<Record<string, number[]>>({});
 
   useEffect(() => {
     async function load() {
@@ -61,8 +59,6 @@ const RSVPSection = () => {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     setSelectedGroup(null);
-    setAttendingMembers([]);
-    setSubmitted(false);
   };
 
   const filteredGroups = useMemo(() => {
@@ -74,43 +70,118 @@ const RSVPSection = () => {
     });
   }, [groups, searchQuery]);
 
+  const resultsOpen = !!searchQuery && filteredGroups.length > 0;
+
   const handleSelectGuest = (g: Group) => {
     const memberNames = g.members.map((m) => m.name);
     setSelectedGroup(memberNames);
     setSelectedGroupRows(g.rows);
-    setAttendingMembers(memberNames);
     setSearchQuery("");
   };
 
-  const toggleMember = (member: string) => {
-    setAttendingMembers((prev) =>
-      prev.includes(member)
-        ? prev.filter((m) => m !== member)
-        : [...prev, member]
+  const updateLocalAttendance = (rowId: string, attendance: "Going" | "Not Going") => {
+    setGroups((prev) =>
+      prev.map((g) => {
+        const rows = g.rows.map((r) => (r.ID === rowId ? { ...r, Attendance: attendance } : r));
+        const members = g.members.map((m) => (m.id === rowId ? { ...m, attendance } : m));
+        return { ...g, rows, members };
+      })
+    );
+    setSelectedGroupRows((prev) =>
+      prev ? prev.map((r) => (r.ID === rowId ? { ...r, Attendance: attendance } : r)) : prev
     );
   };
 
-  const handleSubmit = async () => {
-    if (!selectedGroupRows || attendingMembers.length === 0) {
-      toast.error("Please select at least one person attending");
+  const handleSetAttendance = async (row: RsvpRow, attendance: "Going" | "Not Going") => {
+    const rowId = row.ID;
+    if (rowLoading[rowId]) return;
+    if (row.Attendance === attendance) return;
+
+    const now = Date.now();
+    const history = attemptHistory[rowId] || [];
+    const recent = history.filter((ts) => now - ts < 10000);
+    if (recent.length >= 3) {
+      const oldest = Math.min(...recent);
+      const waitMs = 10000 - (now - oldest);
+      const secs = Math.max(1, Math.ceil(waitMs / 1000));
+      toast.info(`Taking a tiny breather 🙂 Try again in ${secs}s.`);
       return;
     }
+    setAttemptHistory((prev) => ({ ...prev, [rowId]: [...recent, now] }));
+
+    setRowLoading((prev) => ({ ...prev, [rowId]: true }));
     try {
-      setSubmitting(true);
-      // Update selected members to "Going"; leave others unchanged for now
-      for (const row of selectedGroupRows) {
-        if (attendingMembers.includes(row.Name)) {
-          await updateAttendance(row.ID, "Going");
-        }
-      }
-      setSubmitted(true);
-      toast.success("RSVP submitted successfully!");
+      await updateAttendance(rowId, attendance);
+
+      updateLocalAttendance(rowId, attendance);
+
+      const name = row.Name;
+      const successGoing = [
+        (n: string) => `Yay, ${n} is in! See you there 🎉`,
+        (n: string) => `Got it — saving a seat for ${n} 🙌`,
+        (n: string) => `${n} is marked as Going. We’re excited! 💃`,
+      ];
+      const successNotGoing = [
+        (n: string) => `We’ll miss you, ${n}. If plans change, we’d love to see you 💛`,
+        (n: string) => `It won’t be the same without you, ${n}. Think you could reconsider? 🙂`,
+        (n: string) => `Totally understand, ${n}. But we’d be so happy if you could make it!`,
+      ];
+      const pick = <T,>(arr: ((x: string) => T)[]) => arr[Math.floor(Math.random() * arr.length)];
+      const msg = attendance === "Going" ? pick(successGoing)(name) : pick(successNotGoing)(name);
+      toast.success(msg);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
-      toast.error(message || "Failed to submit RSVP");
+      toast.error(message || `Could not update ${row.Name}. Please try again.`);
     } finally {
-      setSubmitting(false);
+      setRowLoading((prev) => ({ ...prev, [rowId]: false }));
     }
+  };
+
+  const AttendanceButtons = ({
+    row,
+    isLoading,
+    goingSelected,
+    notGoingSelected,
+    onSet,
+  }: {
+    row: RsvpRow;
+    isLoading: boolean;
+    goingSelected: boolean;
+    notGoingSelected: boolean;
+    onSet: (row: RsvpRow, attendance: "Going" | "Not Going") => void;
+  }) => {
+    const goingIconClass = goingSelected ? "text-primary-foreground" : "text-green-600";
+    const notGoingIconClass = notGoingSelected ? "text-destructive-foreground" : "text-red-600";
+    return (
+      <div className="flex items-center gap-2">
+        <Button
+          variant={goingSelected ? "default" : "outline"}
+          size="sm"
+          disabled={isLoading}
+          onClick={() => onSet(row, "Going")}
+        >
+          {isLoading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Check className={`mr-2 h-4 w-4 ${goingIconClass}`} />
+          )}
+          Will Attend
+        </Button>
+        <Button
+          variant={notGoingSelected ? "destructive" : "outline"}
+          size="sm"
+          disabled={isLoading}
+          onClick={() => onSet(row, "Not Going")}
+        >
+          {isLoading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <X className={`mr-2 h-4 w-4 ${notGoingIconClass}`} />
+          )}
+          Won't Attend
+        </Button>
+      </div>
+    );
   };
 
   return (
@@ -132,8 +203,7 @@ const RSVPSection = () => {
         </div>
 
         <Card className="border-none bg-card p-8 shadow-xl md:p-12">
-          {!submitted ? (
-            <>
+          <>
               <div className="mb-8">
                 <label className="mb-2 block text-sm font-medium">
                   Find your name
@@ -150,31 +220,62 @@ const RSVPSection = () => {
                 </div>
               </div>
 
-              {searchQuery && filteredGroups.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  className="mb-8 rounded-lg border bg-secondary/20 p-4"
-                >
-                  {filteredGroups.map((g) => (
-                    <button
-                      key={g.groupId}
-                      onClick={() => handleSelectGuest(g)}
-                      className="flex w-full items-center gap-3 rounded-md p-3 text-left transition-colors hover:bg-secondary"
-                    >
-                      <Users className="h-5 w-5 text-primary" />
-                      <div>
-                        <p className="font-medium">{g.groupName}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {g.members.length} {g.members.length === 1 ? "person" : "people"}
-                        </p>
-                      </div>
-                    </button>
-                  ))}
-                </motion.div>
-              )}
+              <div
+                className={`mb-8 rounded-lg border bg-secondary/20 p-4 transition-[max-height,opacity] duration-300 ease-in-out ${
+                  resultsOpen ? "max-h-[420px] opacity-100 overflow-y-auto" : "max-h-0 opacity-0 overflow-hidden"
+                }`}
+              >
+                <div className={resultsOpen ? "pointer-events-auto" : "pointer-events-none"}>
+                  {filteredGroups.map((g) => {
+                    const isSingle = g.members.length === 1;
+                    if (isSingle) {
+                      const row = g.rows[0];
+                      const isLoading = !!rowLoading[row.ID];
+                      const goingSelected = row.Attendance === "Going";
+                      const notGoingSelected = row.Attendance === "Not Going";
+                      return (
+                        <div
+                          key={g.groupId}
+                          className="flex w-full items-center gap-3 rounded-md p-3 text-left transition-colors hover:bg-secondary"
+                        >
+                          <User className="h-5 w-5 text-primary" />
+                          <div className="flex-1">
+                            <p className="font-medium">{g.groupName}</p>
+                          </div>
+                          <AttendanceButtons
+                            row={row}
+                            isLoading={isLoading}
+                            goingSelected={goingSelected}
+                            notGoingSelected={notGoingSelected}
+                            onSet={handleSetAttendance}
+                          />
+                        </div>
+                      );
+                    }
+                    return (
+                      <button
+                        key={g.groupId}
+                        onClick={() => handleSelectGuest(g)}
+                        className="group flex w-full items-center gap-3 rounded-md p-3 text-left transition-colors hover:bg-secondary"
+                      >
+                        <Users className="h-5 w-5 text-primary" />
+                        <div>
+                          <p className="font-medium">{g.groupName}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {g.members.length} {g.members.length === 1 ? "person" : "people"}
+                          </p>
+                        </div>
+                        <div className="ml-auto flex items-center gap-1 text-sm text-muted-foreground">
+                          <span>Check attendance</span>
+                          <span className="transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
-              {selectedGroup && (
+              {selectedGroup && selectedGroupRows && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -189,7 +290,9 @@ const RSVPSection = () => {
                       size="sm"
                       onClick={() => {
                         setSelectedGroup(null);
-                        setAttendingMembers([]);
+                        setSelectedGroupRows(null);
+                        setRowLoading({});
+                        setAttemptHistory({});
                       }}
                       className="gap-2"
                     >
@@ -198,67 +301,30 @@ const RSVPSection = () => {
                     </Button>
                   </div>
                   <div className="space-y-3">
-                    {selectedGroup.map((member) => (
-                      <div
-                        key={member}
-                        className="flex items-center gap-3 rounded-lg border bg-secondary/10 p-4 transition-colors hover:bg-secondary/20"
-                      >
-                        <Checkbox
-                          id={member}
-                          checked={attendingMembers.includes(member)}
-                          onCheckedChange={() => toggleMember(member)}
-                        />
-                        <label
-                          htmlFor={member}
-                          className="flex-1 cursor-pointer text-base font-medium"
+                    {selectedGroupRows.map((row) => {
+                      const isLoading = !!rowLoading[row.ID];
+                      const goingSelected = row.Attendance === "Going";
+                      const notGoingSelected = row.Attendance === "Not Going";
+                      return (
+                        <div
+                          key={row.ID}
+                          className="flex items-center gap-3 rounded-lg border bg-secondary/10 p-4 transition-colors hover:bg-secondary/20"
                         >
-                          {member}
-                        </label>
-                      </div>
-                    ))}
+                          <div className="flex-1 text-base font-medium">{row.Name}</div>
+                          <AttendanceButtons
+                            row={row}
+                            isLoading={isLoading}
+                            goingSelected={goingSelected}
+                            notGoingSelected={notGoingSelected}
+                            onSet={handleSetAttendance}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                 </motion.div>
               )}
-
-              {selectedGroup && (
-                <Button
-                  onClick={handleSubmit}
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  size="lg"
-                  disabled={submitting}
-                >
-                  <Check className="mr-2 h-5 w-5" />
-                  {submitting ? "Submitting..." : "Confirm RSVP"}
-                </Button>
-              )}
             </>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="py-8 text-center"
-            >
-              <div className="mb-6 flex justify-center">
-                <div className="rounded-full bg-primary/10 p-6">
-                  <Check className="h-12 w-12 text-primary" />
-                </div>
-              </div>
-              <h3 className="mb-4 text-2xl font-bold">Thank You!</h3>
-              <p className="mb-6 text-lg text-muted-foreground">
-                We're thrilled you'll be joining us
-              </p>
-              <div className="rounded-lg bg-secondary/20 p-4">
-                <p className="mb-2 font-medium">Attending:</p>
-                <ul className="space-y-1">
-                  {attendingMembers.map((member) => (
-                    <li key={member} className="text-muted-foreground">
-                      {member}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          )}
         </Card>
       </motion.div>
     </section>
