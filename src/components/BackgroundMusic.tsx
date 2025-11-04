@@ -6,6 +6,9 @@ const BackgroundMusic = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [showOverlay, setShowOverlay] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [overlayClosing, setOverlayClosing] = useState(false);
+  const [rippleActive, setRippleActive] = useState(false);
+  const [rippleScaled, setRippleScaled] = useState(false);
 
   useEffect(() => {
     const audioElement = audioRef.current;
@@ -45,7 +48,17 @@ const BackgroundMusic = () => {
     audioRef.current.muted = false;
     audioRef.current.volume = 0.1;
     audioRef.current.play().then(() => {
-      setShowOverlay(false);
+      // play ripple + fade overlay, then remove it after animation
+      setOverlayClosing(true);
+      setRippleActive(true);
+      // next frame -> scale up (enables CSS transition)
+      requestAnimationFrame(() => setRippleScaled(true));
+      window.setTimeout(() => {
+        setShowOverlay(false);
+        setOverlayClosing(false);
+        setRippleActive(false);
+        setRippleScaled(false);
+      }, 700);
       setIsMuted(false);
     }).catch(() => {
       // If still blocked, keep overlay visible
@@ -75,20 +88,37 @@ const BackgroundMusic = () => {
       </button>
       {showOverlay && (
         <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 animate-fade-in"
+          className={`fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-500 ${overlayClosing ? "opacity-0" : "opacity-100"}`}
           onClick={handleStart}
           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleStart(); }}
           role="button"
           tabIndex={0}
           aria-label="Enter site"
         >
-          <div className="mx-6 max-w-md rounded-xl bg-white/10 p-8 text-center text-white shadow-2xl ring-1 ring-white/20 opacity-0 animate-fade-in">
-            <div className="mb-4 text-sm uppercase tracking-[0.3em] text-white/80 animate-fade-in" style={{ animationDelay: "100ms" }}>Welcome</div>
-            <h1 className="mb-5 text-3xl font-semibold tracking-wide animate-fade-in" style={{ animationDelay: "180ms" }}>Prince & Ann</h1>
-            <div className="inline-flex items-center rounded-full bg-white/90 px-6 py-3 text-black transition-colors hover:bg-white animate-fade-in" style={{ animationDelay: "260ms" }}>
+          <div className="mx-6 max-w-md rounded-xl bg-white/10 p-8 text-center text-white shadow-2xl ring-1 ring-white/20 transition-opacity duration-500">
+            <div className="mb-4 text-sm uppercase tracking-[0.3em] text-white/80">Welcome</div>
+            <h1 className="mb-5 text-3xl font-semibold tracking-wide">Prince & Ann</h1>
+            <div className="inline-flex items-center rounded-full bg-white/90 px-6 py-3 text-black transition-colors hover:bg-white">
               Enter
             </div>
           </div>
+        </div>
+      )}
+
+      {rippleActive && (
+        <div className="pointer-events-none fixed inset-0 z-[10001]">
+          <div
+            aria-hidden
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              width: "200vmax",
+              height: "200vmax",
+              backgroundImage: "radial-gradient(circle, hsl(var(--primary)/0.18) 0%, hsl(var(--primary)/0.12) 35%, hsl(var(--primary)/0) 70%)",
+              transform: `translate(-50%, -50%) scale(${rippleScaled ? 1 : 0})`,
+              transition: "transform 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease-out",
+              opacity: rippleScaled ? 0 : 1,
+            }}
+          />
         </div>
       )}
     </>
