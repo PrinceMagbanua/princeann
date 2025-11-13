@@ -1,126 +1,110 @@
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import musicSrc from "@/assets/music/collide-howie-day-instrumental.mp3";
 import { Volume2, VolumeX } from "lucide-react";
 
 const BackgroundMusic = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [overlayClosing, setOverlayClosing] = useState(false);
-  const [rippleActive, setRippleActive] = useState(false);
-  const [rippleScaled, setRippleScaled] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [bounceActive, setBounceActive] = useState(false);
 
+  // Ensure loop and baseline audio config on mount
   useEffect(() => {
-    const audioElement = audioRef.current;
-    if (!audioElement) return;
+    if (!audioRef.current) return;
+    audioRef.current.loop = true;
+    audioRef.current.muted = false;
+    audioRef.current.volume = 0.2;
+  }, []);
 
-    audioElement.loop = true;
-
-    const detectAutoplay = async () => {
-      if (!audioRef.current) return;
-      // Try to autoplay with sound. If it fails, we'll show the overlay to request user input.
-      try {
-        audioRef.current.muted = false;
-        audioRef.current.volume = 0.1;
-        await audioRef.current.play();
-        setShowOverlay(false);
-      } catch {
-        // Autoplay is blocked; require a user gesture via the splash.
-        setShowOverlay(true);
-      }
+  // Allow other components (e.g., HeroSection) to start music
+  useEffect(() => {
+    const handlePlayRequest = () => {
+      startPlaying();
     };
-
-    const timeoutId = window.setTimeout(detectAutoplay, 600);
-
+    window.addEventListener("app:play-music", handlePlayRequest as EventListener);
     return () => {
-      if (timeoutId) window.clearTimeout(timeoutId);
+      window.removeEventListener("app:play-music", handlePlayRequest as EventListener);
     };
   }, []);
 
+  // Periodic bounce attention every ~10s when not playing
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.muted = isMuted;
-    }
-  }, [isMuted]);
+    let intervalId: number | undefined;
+    let timeoutId: number | undefined;
 
-  const handleStart = () => {
-    if (!audioRef.current) return;
-    audioRef.current.muted = false;
-    audioRef.current.volume = 0.1;
-    audioRef.current.play().then(() => {
-      // play ripple + fade overlay, then remove it after animation
-      setOverlayClosing(true);
-      setRippleActive(true);
-      // next frame -> scale up (enables CSS transition)
-      requestAnimationFrame(() => setRippleScaled(true));
-      window.setTimeout(() => {
-        setShowOverlay(false);
-        setOverlayClosing(false);
-        setRippleActive(false);
-        setRippleScaled(false);
-      }, 700);
-      setIsMuted(false);
-    }).catch(() => {
-      // If still blocked, keep overlay visible
-      setShowOverlay(true);
-    });
+    if (!isPlaying) {
+      intervalId = window.setInterval(() => {
+        setBounceActive(true);
+        // stop bounce after animation duration
+        timeoutId = window.setTimeout(() => setBounceActive(false), 800);
+      }, 10000);
+    } else {
+      setBounceActive(false);
+    }
+
+    return () => {
+      if (intervalId) window.clearInterval(intervalId);
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [isPlaying]);
+
+  const startPlaying = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    try {
+      audio.volume = 0.1;
+      await audio.play();
+      setIsPlaying(true);
+    } catch {
+      // Playback will fail if not initiated by a user gesture; ignore.
+    }
   };
 
-  const toggleMute = () => {
-    setIsMuted((prev) => !prev);
+  const stopPlaying = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.pause();
+    setIsPlaying(false);
+  };
+
+  const togglePlay = () => {
+    if (isPlaying) {
+      stopPlaying();
+    } else {
+      startPlaying();
+    }
   };
 
   return (
     <>
       <audio ref={audioRef} src={musicSrc} preload="auto" />
-      {/* Fixed mute toggle */}
-      <button
-        type="button"
-        onClick={toggleMute}
-        aria-label={isMuted ? "Unmute" : "Mute"}
-        className="fixed top-4 right-4 z-[10000] inline-flex items-center justify-center h-9 w-9 rounded-full bg-white/80 text-foreground shadow-md ring-1 ring-black/10 backdrop-blur hover:bg-white"
-      >
-        {isMuted ? (
-          <VolumeX className="h-5 w-5" />
-        ) : (
-          <Volume2 className="h-5 w-5" />
-        )}
-      </button>
-      {showOverlay && (
-        <div
-          className={`fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-500 ${overlayClosing ? "opacity-0" : "opacity-100"}`}
-          onClick={handleStart}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleStart(); }}
-          role="button"
-          tabIndex={0}
-          aria-label="Enter site"
-        >
-          <div className="mx-6 max-w-md rounded-xl bg-white/10 p-8 text-center text-white shadow-2xl ring-1 ring-white/20 transition-opacity duration-500">
-            <div className="mb-4 text-sm uppercase tracking-[0.3em] text-white/80">Welcome</div>
-            <h1 className="mb-5 text-3xl font-semibold tracking-wide">Prince & Ann</h1>
-            <div className="inline-flex items-center rounded-full bg-white/90 px-6 py-3 text-black transition-colors hover:bg-white">
-              Enter
-            </div>
-          </div>
-        </div>
-      )}
-
-      {rippleActive && (
-        <div className="pointer-events-none fixed inset-0 z-[10001]">
-          <div
+      {/* Fixed play/stop toggle with hover label and bounce on initial load */}
+      <div className="fixed top-4 right-4 z-[10000]">
+        <div className="relative group">
+          {/* Slide-out label to the left */}
+          <span
+            className="pointer-events-none absolute right-full mr-2 mt-1 select-none rounded-full bg-white/90 px-3 py-1 text-sm text-black shadow-md ring-1 ring-black/10 opacity-0 translate-x-2 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 whitespace-nowrap w-auto"
+            style={{ width: "auto" }}
             aria-hidden
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
-            style={{
-              width: "200vmax",
-              height: "200vmax",
-              backgroundImage: "radial-gradient(circle, hsl(var(--primary)/0.18) 0%, hsl(var(--primary)/0.12) 35%, hsl(var(--primary)/0) 70%)",
-              transform: `translate(-50%, -50%) scale(${rippleScaled ? 1 : 0})`,
-              transition: "transform 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease-out",
-              opacity: rippleScaled ? 0 : 1,
-            }}
-          />
+          >
+            {isPlaying ? "Stop Music" : "Play Music"}
+          </span>
+          <motion.button
+            type="button"
+            onClick={togglePlay}
+            aria-label={isPlaying ? "Stop background music" : "Play background music"}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-foreground shadow-md ring-1 ring-black/10 backdrop-blur transition-colors hover:bg-white"
+            animate={bounceActive ? { y: [0, -10, 0] } : { y: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          >
+            {isPlaying ? (
+              <Volume2 className="h-5 w-5" />
+            ) : (
+              <VolumeX className="h-5 w-5" />
+            )}
+          </motion.button>
         </div>
-      )}
+      </div>
     </>
   );
 };

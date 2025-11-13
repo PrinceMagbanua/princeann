@@ -205,6 +205,13 @@ const RSVPSection = () => {
         <Card className="border-none bg-card p-8 shadow-xl md:p-12">
           <>
               <div className="mb-8">
+                <div className="mb-4 rounded-md border border-black/10 bg-secondary/20 p-3 text-sm text-muted-foreground">
+                  <p className="font-medium text-foreground">Please Note:</p>
+                  <p>
+                    Due to venue limitations and family size, we’ve made the difficult decision to keep our
+                    guest list to family and close friends.
+                  </p>
+                </div>
                 <label className="mb-2 block text-sm font-medium">
                   Find your name
                 </label>

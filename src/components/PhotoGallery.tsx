@@ -68,7 +68,7 @@ const PhotoGallery = () => {
                 y: titleY,
                 opacity: titleOpacity,
               }}
-              className="mb-8 text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
+              className="text-3xl md:text-4xl font-bold text-foreground mb-6"
             >
               Hello, Family & Friends!
             </motion.h1>
@@ -112,21 +112,6 @@ const PhotoGallery = () => {
           transition={{ duration: 1, delay: 0.3 }}
           className="mb-16"
         >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="mb-8 text-center"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Our Journey Together
-            </h2>
-            <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto">
-              Moments that tell our story
-            </p>
-          </motion.div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             <motion.div
               style={{ y: y1 }}

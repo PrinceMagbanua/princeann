@@ -1,9 +1,25 @@
-import venueImage from "@/assets/venue.jpg";
+import venueImage from "@/assets/taller.png";
+import venueFront from "@/assets/taller-venue-front.png";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 const VenueSection = () => {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Parallax mappings (subtle, to feel like a delay)
+  // Increased range for more dramatic movement, and will use larger text (see where text is rendered).
+  // Also, to make it appear "higher" at start, start value is negative (up), end value is positive (down)
+  const textY = useTransform(scrollYProgress, [0, 1], [-450, 100]);
+  const foregroundY = useTransform(scrollYProgress, [0, 1], [-100, -90]);
+
   return (
-    <section className="relative h-[800px] overflow-hidden">
-      <div className="absolute inset-0">
+    <section ref={sectionRef as any} className="relative h-[900px] overflow-hidden">
+      {/* Background image */}
+      <div className="absolute inset-0 z-0">
         <img
           src={venueImage}
           alt="Hampton Court Venue"
@@ -12,16 +28,38 @@ const VenueSection = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-hero-overlay/40 via-transparent to-hero-overlay/40" />
       </div>
 
-      <div className="relative z-10 flex h-full items-center justify-center">
-        <div className="text-center text-white px-4">
-          <h2 className="mb-4 text-5xl font-bold tracking-wide md:text-6xl drop-shadow-lg">
-            Hampton Court Hillsborough
-          </h2>
-          <p className="text-xl font-light tracking-wide drop-shadow-md">
-            Where our forever begins
-          </p>
-        </div>
+      {/* Miniature blur overlay (tilt-shift style on edges) */}
+      <div
+        className="absolute inset-0 z-2 pointer-events-none"
+        style={{
+          WebkitMaskImage:
+            "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 58%, rgba(0,0,0,0.15) 72%, rgba(0,0,0,0.85) 100%)",
+          maskImage:
+            "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 28%, rgba(0,0,0,0.15) 72%, rgba(0,0,0,0.85) 100%)",
+        }}
+      >
+        <img
+          src={venueImage}
+          alt="Hampton Court Venue blur overlay"
+          className="h-full w-full object-cover blur-[3px]"
+        />
       </div>
+
+      {/* Giant title behind the subject */}
+      <motion.div style={{ y: textY }} className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+        <h2 className="text-center px-4 text-white/95 drop-shadow-xl font-bold tracking-heavy" style={{ fontSize: "8vw", lineHeight: 1 }}>
+          Sacred Heart of <br/> Jesus Parish
+        </h2>
+      </motion.div>
+
+      {/* Foreground subject cutout (PNG) */}
+      <motion.div style={{ y: foregroundY }} className="absolute inset-0 z-10">
+        <img
+          src={venueFront}
+          alt="Hampton Court foreground"
+          className="h-auto w-full object-cover select-none pointer-events-none bottom-0"
+        />
+      </motion.div>
     </section>
   );
 };

@@ -14,6 +14,12 @@ const HeroSection = () => {
   const maskY = useTransform(smoothY, [0, 300], ["0%", "100%"]);
 
   const scrollToRSVP = () => {
+    // Start background music on RSVP click
+    try {
+      window.dispatchEvent(new CustomEvent("app:play-music"));
+    } catch {
+      // no-op
+    }
     const rsvpSection = document.getElementById("rsvp-section");
     if (rsvpSection) {
       rsvpSection.scrollIntoView({ behavior: "smooth" });
@@ -87,16 +93,35 @@ const HeroSection = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <p className="mb-8 text-lg font-light tracking-wide md:text-xl">
+            {/* <p className="mb-8 text-lg font-light tracking-wide md:text-xl">
               Join us in celebrating our love
-            </p>
-            <Button
-              onClick={scrollToRSVP}
-              size="lg"
-              className="bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm"
-            >
-              RSVP Now
-            </Button>
+            </p> */}
+            <div className="relative inline-block w-full">
+              <Button
+                onClick={scrollToRSVP}
+                size="lg"
+                className={`
+                  relative overflow-hidden
+                  px-5 py-5
+                  text-lg md:text-xl
+                  font-regular
+                  shadow-2xl
+                  border border-white/40
+                  bg-[#c8dfc2]/50 backdrop-blur-xl
+                  text-white 
+                  hover:bg-[#e6f4e9] hover:text-black
+                  transition-all duration-200
+                  outline-white/40
+                  min-w-[170px]
+                `}
+                style={{
+                  letterSpacing: "0.05em",
+                  boxShadow: "0 0 38px 0 rgba(200,223,194,0.40), 0 2px 10px rgb(0 0 0 / 0.15)"
+                }}
+              >
+                <span className="relative z-10">RSVP Now</span>
+              </Button>
+            </div>
           </motion.div>
         </div>
       </motion.div>

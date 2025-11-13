@@ -11,7 +11,7 @@ const AttireSection = () => {
   ];
 
   return (
-    <section className="py-20 px-4" style={{ background: "var(--gradient-sage)" }}>
+    <section id="attire-section" className="py-20 px-4" style={{ background: "var(--gradient-sage)" }}>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
