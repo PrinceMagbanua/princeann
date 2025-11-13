@@ -14,10 +14,10 @@ const VenueSection = () => {
   // Increased range for more dramatic movement, and will use larger text (see where text is rendered).
   // Also, to make it appear "higher" at start, start value is negative (up), end value is positive (down)
   const textY = useTransform(scrollYProgress, [0, 1], [-450, 100]);
-  const foregroundY = useTransform(scrollYProgress, [0, 1], [-100, -90]);
+  const foregroundY = useTransform(scrollYProgress, [0, 1], [0,0]);
 
   return (
-    <section ref={sectionRef as any} className="relative h-[900px] overflow-hidden">
+    <section ref={sectionRef} className="relative h-[80vh] md:h-[900px] overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <img
@@ -53,13 +53,13 @@ const VenueSection = () => {
       </motion.div>
 
       {/* Foreground subject cutout (PNG) */}
-      <motion.div style={{ y: foregroundY }} className="absolute inset-0 z-10">
+      <div className="absolute inset-0 z-10 flex items-end justify-center">
         <img
           src={venueFront}
           alt="Hampton Court foreground"
-          className="h-auto w-full object-cover select-none pointer-events-none bottom-0"
+          className="h-full w-full object-cover object-bottom select-none pointer-events-none"
         />
-      </motion.div>
+      </div>
     </section>
   );
 };
