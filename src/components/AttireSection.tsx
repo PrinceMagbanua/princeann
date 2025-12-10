@@ -14,11 +14,11 @@ import women4 from "@/assets/attire/women-4.jpg";
 
 const AttireSection = () => {
   const colorPalette = [
-    { name: "Deep Sage", color: "hsl(140, 28%, 32%)" },
-    { name: "Sage", color: "hsl(140, 28%, 45%)" },
-    { name: "Soft Sage", color: "hsl(140, 25%, 70%)" },
-    { name: "Champagne", color: "hsl(45, 35%, 82%)" },
-    { name: "Ivory", color: "hsl(0, 0%, 98%)" },
+    { name: "Deep Olive", color: "#4a6a45" },
+    { name: "Garden Green", color: "#5c7f53" },
+    { name: "Soft Sage", color: "#7ea56a" },
+    { name: "Fresh Mint", color: "#4faa76" },
+    { name: "Sage Khaki", color: "#a7b38c" },
   ];
 
 
@@ -77,19 +77,18 @@ const AttireSection = () => {
             <Card className="relative overflow-hidden border-none bg-card/90 p-8 shadow-xl backdrop-blur">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/10 to-transparent" />
               <div className="relative space-y-8">
-                <div className="grid gap-6 md:grid-cols-2 md:items-center">
-                  <div className="space-y-3">
+                <div className="grid gap-8 md:grid-cols-[1.1fr_auto] md:items-center">
+                  <div className="space-y-3 md:text-left text-center">
                     <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Dress Code</p>
                     <h3 className="text-2xl font-semibold text-foreground">Semi-Formal</h3>
-                    <div className="space-y-2 text-base text-muted-foreground">
-                      <p>
-                        We invite you to dress in your finest semi-formal to formal wear. Feel free to echo the sage green
-                        color palette setting with soft tones and simple accents.
+                    <div className="space-y-3 text-base text-muted-foreground">
+                      <p className="text-center md:text-left">
+                        We kindly encourage our guests to wear these colors for our special day.
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-center gap-4 sm:grid sm:grid-cols-5 sm:gap-5 sm:place-items-center">
+                  <div className="grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-5 sm:gap-6 md:justify-self-end">
                     {colorPalette.map((tone, index) => (
                       <motion.div
                         key={tone.name}
@@ -97,7 +96,7 @@ const AttireSection = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.35, delay: index * 0.05 }}
-                        className="flex flex-col items-center justify-center"
+                        className="flex flex-col items-center justify-center text-center"
                       >
                         <span
                           className="inline-block h-14 w-14 rounded-full ring-2 ring-border shadow-lg"
@@ -128,9 +127,16 @@ const AttireSection = () => {
               <div className="space-y-6">
                 {inspirationGroups.map((group) => (
                   <div key={group.label} className="space-y-3">
-                    <p className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                      {group.label}
-                    </p>
+                    <div className="space-y-1">
+                      <p className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                        {group.label}
+                      </p>
+                      {group.label === "For her" ? (
+                        <p className="text-xs text-muted-foreground">Dress · Skirt · Blazer · Jumpsuit</p>
+                      ) : (
+                        <p className="text-xs text-muted-foreground">Long Sleeves · Polo · Slacks · Blazer</p>
+                      )}
+                    </div>
                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
                       {group.looks.map((look, index) => (
                         <Dialog key={look.title}>

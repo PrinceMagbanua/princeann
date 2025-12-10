@@ -21,10 +21,10 @@ const Switch = React.forwardRef<
       )}
     >
       <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-green-600 opacity-0 group-data-[state=checked]:opacity-100">
-        ✓
+        YES
       </span>
       <span className="absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-red-500 opacity-100 group-data-[state=checked]:opacity-0">
-        ✕
+        NO
       </span>
     </SwitchPrimitives.Thumb>
   </SwitchPrimitives.Root>

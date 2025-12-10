@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Search, Users, ArrowLeft, Loader2, Check, X } from "lucide-react";
 import { Button } from "./ui/button";
@@ -154,47 +154,45 @@ const RSVPSection = () => {
     const goingIconClass = goingSelected ? "text-primary-foreground" : "text-green-600";
     const notGoingIconClass = notGoingSelected ? "text-destructive-foreground" : "text-red-600";
     return (
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
-        {/* Mobile toggle style */}
-        <div className="flex items-center justify-between gap-3 rounded-lg border bg-secondary/30 px-3 py-2 sm:hidden">
-          <span className="text-sm font-medium text-foreground">Will attend</span>
-          <Switch
-            checked={goingSelected}
-            disabled={isLoading}
-            onCheckedChange={(checked) => onSet(row, checked ? "Going" : "Not Going")}
-            className="data-[state=checked]:bg-primary"
-          />
+      <div className="relative w-full">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+          <div className="flex w-full flex-row flex-nowrap gap-2 sm:w-auto sm:flex-nowrap">
+            <Button
+              variant={goingSelected ? "default" : "outline"}
+              size="sm"
+              disabled={isLoading}
+              onClick={() => onSet(row, "Going")}
+              className="flex-1 justify-center px-3 py-2 text-sm sm:flex-none sm:w-auto sm:px-4 sm:py-2"
+            >
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Check className={`h-4 w-4 ${goingIconClass}`} />
+              )}
+              Will Attend
+            </Button>
+            <Button
+              variant={notGoingSelected ? "destructive" : "outline"}
+              size="sm"
+              disabled={isLoading}
+              onClick={() => onSet(row, "Not Going")}
+              className="flex-1 justify-center px-3 py-2 text-sm sm:flex-none sm:w-auto sm:px-4 sm:py-2"
+            >
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <X className={`h-4 w-4 ${notGoingIconClass}`} />
+              )}
+              Won't Attend
+            </Button>
+          </div>
         </div>
 
-        {/* Desktop buttons */}
-        <div className="hidden items-center gap-2 sm:flex">
-          <Button
-            variant={goingSelected ? "default" : "outline"}
-            size="sm"
-            disabled={isLoading}
-            onClick={() => onSet(row, "Going")}
-          >
-            {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Check className={`mr-2 h-4 w-4 ${goingIconClass}`} />
-            )}
-            Will Attend
-          </Button>
-          <Button
-            variant={notGoingSelected ? "destructive" : "outline"}
-            size="sm"
-            disabled={isLoading}
-            onClick={() => onSet(row, "Not Going")}
-          >
-            {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <X className={`mr-2 h-4 w-4 ${notGoingIconClass}`} />
-            )}
-            Won't Attend
-          </Button>
-        </div>
+        {isLoading && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-background/70">
+            <Loader2 className="h-5 w-5 animate-spin text-primary" />
+          </div>
+        )}
       </div>
     );
   };
@@ -248,7 +246,7 @@ const RSVPSection = () => {
                 }`}
               >
                 <div className={resultsOpen ? "pointer-events-auto" : "pointer-events-none"}>
-                  {filteredGroups.map((g) => {
+                  {filteredGroups.map((g, idx) => {
                     const isSingle = g.members.length === 1;
                     if (isSingle) {
                       const row = g.rows[0];
@@ -256,41 +254,51 @@ const RSVPSection = () => {
                       const goingSelected = row.Attendance === "Going";
                       const notGoingSelected = row.Attendance === "Not Going";
                       return (
-                        <div
-                          key={g.groupId}
-                          className="flex w-full items-center gap-3 rounded-md p-3 text-left transition-colors hover:bg-secondary"
-                        >
-                          <div className="flex-1">
-                            <p className="font-medium">{g.groupName}</p>
+                        <Fragment key={g.groupId}>
+                          <div
+                            className={`flex w-full flex-col gap-2 rounded-md p-3 text-left transition-colors hover:bg-secondary sm:flex-row sm:items-center sm:gap-3 ${
+                              isLoading ? "pointer-events-none opacity-70" : ""
+                            }`}
+                          >
+                            <div className="w-full text-center sm:text-left">
+                              <p className="font-medium">{g.groupName}</p>
+                            </div>
+                            <AttendanceButtons
+                              row={row}
+                              isLoading={isLoading}
+                              goingSelected={goingSelected}
+                              notGoingSelected={notGoingSelected}
+                              onSet={handleSetAttendance}
+                            />
                           </div>
-                          <AttendanceButtons
-                            row={row}
-                            isLoading={isLoading}
-                            goingSelected={goingSelected}
-                            notGoingSelected={notGoingSelected}
-                            onSet={handleSetAttendance}
-                          />
-                        </div>
+                          {idx !== filteredGroups.length - 1 && (
+                            <div className="my-2 h-[2px] w-full bg-gradient-to-r from-transparent via-border to-transparent" />
+                          )}
+                        </Fragment>
                       );
                     }
                     return (
-                      <button
-                        key={g.groupId}
-                        onClick={() => handleSelectGuest(g)}
-                        className="group flex w-full items-center gap-3 rounded-md p-3 text-left transition-colors hover:bg-secondary"
-                      >
-                        <Users className="h-5 w-5 text-primary" />
-                        <div>
-                          <p className="font-medium">{g.groupName}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {g.members.length} {g.members.length === 1 ? "person" : "people"}
-                          </p>
-                        </div>
-                        <div className="ml-auto flex items-center gap-1 text-sm text-muted-foreground">
-                          <span>Check attendance</span>
-                          <span className="transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-                        </div>
-                      </button>
+                      <Fragment key={g.groupId}>
+                        <button
+                          onClick={() => handleSelectGuest(g)}
+                          className="group flex w-full items-center gap-3 rounded-md p-3 text-left transition-colors hover:bg-secondary"
+                        >
+                          <Users className="h-5 w-5 text-primary" />
+                          <div>
+                            <p className="font-medium">{g.groupName}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {g.members.length} {g.members.length === 1 ? "person" : "people"}
+                            </p>
+                          </div>
+                          <div className="ml-auto flex items-center gap-1 text-sm text-muted-foreground">
+                            <span>Check attendance</span>
+                            <span className="transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+                          </div>
+                        </button>
+                        {idx !== filteredGroups.length - 1 && (
+                          <div className="my-2 h-px w-full bg-gradient-to-r from-transparent via-border to-transparent" />
+                        )}
+                      </Fragment>
                     );
                   })}
                 </div>
@@ -322,16 +330,18 @@ const RSVPSection = () => {
                     </Button>
                   </div>
                   <div className="space-y-3">
-                    {selectedGroupRows.map((row) => {
+                    {selectedGroupRows.map((row, idx) => {
                       const isLoading = !!rowLoading[row.ID];
                       const goingSelected = row.Attendance === "Going";
                       const notGoingSelected = row.Attendance === "Not Going";
                       return (
                         <div
                           key={row.ID}
-                          className="flex items-center gap-3 rounded-lg border bg-secondary/10 p-4 transition-colors hover:bg-secondary/20"
+                          className={`relative flex flex-col gap-3 rounded-lg border bg-secondary/10 p-4 transition-colors hover:bg-secondary/20 sm:flex-row sm:items-center sm:justify-between sm:gap-4 ${
+                            isLoading ? "pointer-events-none opacity-80" : ""
+                          } ${idx !== selectedGroupRows.length - 1 ? "border-b border-border pb-6 mb-4 sm:border-b-0 sm:pb-4 sm:mb-3" : ""}`}
                         >
-                          <div className="flex-1 text-base font-medium">{row.Name}</div>
+                          <div className="text-base font-medium text-center sm:text-left">{row.Name}</div>
                           <AttendanceButtons
                             row={row}
                             isLoading={isLoading}
@@ -339,6 +349,11 @@ const RSVPSection = () => {
                             notGoingSelected={notGoingSelected}
                             onSet={handleSetAttendance}
                           />
+                          {isLoading && (
+                            <div className="absolute inset-0 z-10 flex items-center justify-end pr-4">
+                              <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                            </div>
+                          )}
                         </div>
                       );
                     })}
