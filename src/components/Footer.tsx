@@ -57,7 +57,8 @@ const Footer = () => {
             </motion.div>
             <h3 className="font-semibold mb-2">Date</h3>
             <p className="opacity-90">Saturday, February 7, 2026</p>
-            <p className="opacity-90">Ceremony 1:30 PM · Reception 4:00 PM</p>
+            <p className="opacity-90">Ceremony 1:30 PM</p>
+            <p className="opacity-90">Reception 4:00 PM</p>
           </motion.a>
 
           <motion.a
@@ -84,7 +85,7 @@ const Footer = () => {
               <Heart className="h-8 w-8 mx-auto mb-3 opacity-80" />
             </motion.div>
             <h3 className="font-semibold mb-2">Dress Code</h3>
-            <p className="opacity-90">Formal Attire</p>
+            <p className="opacity-90">Semi-Formal Attire</p>
             <p className="opacity-90">Sage Green Palette</p>
           </motion.a>
         </div>
@@ -94,7 +95,7 @@ const Footer = () => {
             We can't wait to celebrate this special day with you
           </p>
           <p className="opacity-75 text-sm mt-2">
-            © 2024 Prince & Ann
+            © 2026 Prince & Ann
           </p>
         </div>
       </motion.div>

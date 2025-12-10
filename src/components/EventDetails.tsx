@@ -77,8 +77,8 @@ const EventDetails = () => {
         {/* Section heading with single date */}
         <motion.div variants={itemVariants} className="mb-8 md:mb-10 text-center">
           <h2 className="mb-2 text-4xl md:text-5xl font-bold text-foreground">The Celebration</h2>
-          <div className="inline-flex flex-col items-center justify-center gap-2 rounded-full bg-white/50 px-5 py-3 text-xl md:text-xl shadow-sm ring-3 ring-white/10 backdrop-blur font-bold sm:flex-row sm:gap-3">
-            <Calendar className="h-5 w-5 text-primaryfont-bold" />
+        <div className="mt-4 inline-flex flex-col-reverse items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-xl md:text-xl shadow-sm ring-3 ring-white/10 font-bold sm:flex-row sm:gap-3">
+            <Calendar className="h-5 w-5  text-primaryfont-bold" />
             <span className="text-center">Saturday, February 7, 2026</span>
           </div>
         </motion.div>

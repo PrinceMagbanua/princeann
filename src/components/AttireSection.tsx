@@ -88,7 +88,7 @@ const AttireSection = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 justify-items-center gap-4 sm:grid-cols-5 sm:gap-6 md:justify-self-end">
+                  <div className="flex flex-wrap justify-center gap-3 sm:grid sm:grid-cols-5 sm:gap-6 md:justify-self-end">
                     {colorPalette.map((tone, index) => (
                       <motion.div
                         key={tone.name}
@@ -96,14 +96,20 @@ const AttireSection = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.35, delay: index * 0.05 }}
-                        className="flex flex-col items-center justify-center text-center"
+                        className="flex w-[30%] flex-col items-center justify-center text-center sm:w-auto"
                       >
-                        <span
-                          className="inline-block h-14 w-14 rounded-full ring-2 ring-border shadow-lg"
-                          style={{ backgroundColor: tone.color }}
-                          aria-label={tone.name}
-                        />
-                        <p className="mt-2 text-xs font-medium text-foreground/80">{tone.name}</p>
+                        <div className="flex flex-col items-center justify-center">
+                          <span
+                            className="inline-block h-12 w-12 rounded-full ring-2 ring-border shadow-lg sm:h-14 sm:w-14"
+                            style={{ backgroundColor: tone.color }}
+                            aria-label={tone.name}
+                          />
+                        </div>
+                        <div className="flex-1 flex items-start justify-center w-full min-h-[2.2rem]">
+                          <p className="mt-2 text-[11px] font-medium text-foreground/80 leading-tight break-words w-full sm:text-xs">
+                            {tone.name}
+                          </p>
+                        </div>
                       </motion.div>
                     ))}
                   </div>
@@ -121,7 +127,7 @@ const AttireSection = () => {
             <Card className="overflow-hidden border-none bg-card/90 p-8 shadow-xl backdrop-blur">
               <div className="mb-4 space-y-1">
                 <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Inspiration</p>
-                <h3 className="text-2xl font-semibold text-foreground">What to wear</h3>
+                <h3 className="text-2xl font-semibold text-foreground pb-6">What to wear</h3>
               </div>
 
               <div className="space-y-6">

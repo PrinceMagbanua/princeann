@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gallery1 from "@/assets/gallery-1.jpg";
 import gallery2 from "@/assets/gallery-2.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
@@ -8,6 +8,16 @@ const PhotoGallery = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const photosRef = useRef<HTMLDivElement>(null);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    setIsMobile(mq.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -114,7 +124,7 @@ const PhotoGallery = () => {
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             <motion.div
-              style={{ y: y1 }}
+              style={{ y: isMobile ? 0 : y1 }}
               initial={{ opacity: 0, scale: 0.7, rotateX: -15 }}
               whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
               viewport={{ once: true, margin: "-10%" }}
@@ -161,7 +171,7 @@ const PhotoGallery = () => {
             </motion.div>
 
             <motion.div
-              style={{ y: y2 }}
+              style={{ y: isMobile ? 0 : y2 }}
               initial={{ opacity: 0, scale: 0.7, rotateX: -15 }}
               whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
               viewport={{ once: true, margin: "-10%" }}
@@ -209,7 +219,7 @@ const PhotoGallery = () => {
             </motion.div>
 
             <motion.div
-              style={{ y: y3 }}
+              style={{ y: isMobile ? 0 : y3 }}
               initial={{ opacity: 0, scale: 0.7, rotateX: -15 }}
               whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
               viewport={{ once: true, margin: "-10%" }}

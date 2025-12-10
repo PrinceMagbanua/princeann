@@ -52,17 +52,10 @@ const GiftsSection = () => {
               className="space-y-6 text-lg text-muted-foreground leading-relaxed"
             >
               <p>
-                We feel incredibly blessed to have your love, support, and friendship 
-                throughout these years. Having you celebrate with us on our special day 
-                is truly the greatest gift we could ever ask for.
-              </p>
-              <p className="text-xl font-medium text-primary">
-                Your presence is the best present ♡
+              We are truly blessed with all that we have. Your presence and prayers are the greatest gifts we could ask for.
               </p>
               <p>
-                However, if you wish to honor us with a gift, a small contribution 
-                toward our future adventures together would be deeply appreciated and 
-                will help us start this new chapter of our lives.
+              However, if you wish to honor us with a gift, a small contribution toward our future adventures together would be deeply appreciated and will help us start this new chapter of our lives.
               </p>
             </motion.div>
 

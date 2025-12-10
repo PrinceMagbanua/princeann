@@ -155,14 +155,14 @@ const RSVPSection = () => {
     const notGoingIconClass = notGoingSelected ? "text-destructive-foreground" : "text-red-600";
     return (
       <div className="relative w-full">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-          <div className="flex w-full flex-row flex-nowrap gap-2 sm:w-auto sm:flex-nowrap">
+        <div className="flex flex-col gap-2 px-0 sm:flex-row sm:items-center sm:gap-3 justify-end ">
+          <div className="flex w-full flex-row px-0 flex-nowrap gap-2 sm:w-auto sm:flex-nowrap">
             <Button
               variant={goingSelected ? "default" : "outline"}
               size="sm"
               disabled={isLoading}
               onClick={() => onSet(row, "Going")}
-              className="flex-1 justify-center px-3 py-2 text-sm sm:flex-none sm:w-auto sm:px-4 sm:py-2"
+              className="flex-1 justify-center px-3 py-2 text-sm leading-5 sm:flex-none sm:w-auto sm:px-4 sm:py-2 gap-1"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -176,7 +176,7 @@ const RSVPSection = () => {
               size="sm"
               disabled={isLoading}
               onClick={() => onSet(row, "Not Going")}
-              className="flex-1 justify-center px-3 py-2 text-sm sm:flex-none sm:w-auto sm:px-4 sm:py-2"
+              className="flex-1 justify-center px-3 py-2 text-sm leading-5 sm:flex-none sm:w-auto sm:px-4 sm:py-2 gap-1"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -198,13 +198,13 @@ const RSVPSection = () => {
   };
 
   return (
-    <section id="rsvp-section" className="py-20 px-4 bg-background">
+    <section id="rsvp-section" className="py-20 px-3 sm:px-4 bg-background">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="container mx-auto max-w-4xl"
+        className="container mx-auto max-w-4xl px-0 sm:px-2"
       >
         <div className="mb-12 text-center">
           <h2 className="mb-4 text-5xl font-bold text-foreground md:text-6xl">
@@ -215,7 +215,7 @@ const RSVPSection = () => {
           </p>
         </div>
 
-        <Card className="border-none bg-card p-6 shadow-xl sm:p-8 md:p-12">
+        <Card className="border-none bg-card p-4 shadow-xl sm:p-6 md:p-12">
           <>
               <div className="mb-8">
                 <div className="mb-4 rounded-md border border-black/10 bg-secondary/20 p-3 text-sm text-muted-foreground">
@@ -235,13 +235,13 @@ const RSVPSection = () => {
                     placeholder="Search for your name..."
                     value={searchQuery}
                     onChange={(e) => handleSearch(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 h-14 text-base sm:text-lg"
                   />
                 </div>
               </div>
 
               <div
-                className={`mb-8 rounded-lg border bg-secondary/20 p-4 transition-[max-height,opacity] duration-300 ease-in-out ${
+                className={`mb-8 rounded-lg border bg-secondary/20 p-2 transition-[max-height,opacity] duration-300 ease-in-out ${
                   resultsOpen ? "max-h-[420px] opacity-100 overflow-y-auto" : "max-h-0 opacity-0 overflow-hidden"
                 }`}
               >
@@ -256,7 +256,7 @@ const RSVPSection = () => {
                       return (
                         <Fragment key={g.groupId}>
                           <div
-                            className={`flex w-full flex-col gap-2 rounded-md p-3 text-left transition-colors hover:bg-secondary sm:flex-row sm:items-center sm:gap-3 ${
+                            className={`flex w-full flex-col gap-2 rounded-md p-2 text-left transition-colors hover:bg-secondary sm:flex-row sm:items-center sm:gap-3 ${
                               isLoading ? "pointer-events-none opacity-70" : ""
                             }`}
                           >
@@ -272,7 +272,7 @@ const RSVPSection = () => {
                             />
                           </div>
                           {idx !== filteredGroups.length - 1 && (
-                            <div className="my-2 h-[2px] w-full bg-gradient-to-r from-transparent via-border to-transparent" />
+                            <div className="my-2 h-[2px] w-full bg-gradient-to-r from-transparent via-border/70 to-transparent" />
                           )}
                         </Fragment>
                       );
@@ -296,7 +296,7 @@ const RSVPSection = () => {
                           </div>
                         </button>
                         {idx !== filteredGroups.length - 1 && (
-                          <div className="my-2 h-px w-full bg-gradient-to-r from-transparent via-border to-transparent" />
+                          <div className="my-2 h-px w-full bg-gradient-to-r from-transparent via-border/70 to-transparent" />
                         )}
                       </Fragment>
                     );

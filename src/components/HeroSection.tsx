@@ -106,10 +106,10 @@ const HeroSection = () => {
                   text-lg md:text-xl
                   font-regular
                   shadow-2xl
-                  border border-white/40
-                  bg-[#c8dfc2]/50 backdrop-blur-xl
-                  text-white 
-                  hover:bg-[#e6f4e9] hover:text-black
+                  border border-white
+                  bg-white
+                  text-green-700 
+                  hover:text-green-800 hover:bg-white
                   transition-all duration-200
                   outline-white/40
                   min-w-[170px]
