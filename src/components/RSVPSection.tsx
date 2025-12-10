@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Search, Users, User, ArrowLeft, Loader2, Check, X } from "lucide-react";
+import { Search, Users, ArrowLeft, Loader2, Check, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
+import { Switch } from "./ui/switch";
 import { toast } from "sonner";
 import { fetchRsvpList, updateAttendance, type RsvpRow } from "@/lib/rsvpApi";
 
@@ -153,33 +154,47 @@ const RSVPSection = () => {
     const goingIconClass = goingSelected ? "text-primary-foreground" : "text-green-600";
     const notGoingIconClass = notGoingSelected ? "text-destructive-foreground" : "text-red-600";
     return (
-      <div className="flex items-center gap-2">
-        <Button
-          variant={goingSelected ? "default" : "outline"}
-          size="sm"
-          disabled={isLoading}
-          onClick={() => onSet(row, "Going")}
-        >
-          {isLoading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Check className={`mr-2 h-4 w-4 ${goingIconClass}`} />
-          )}
-          Will Attend
-        </Button>
-        <Button
-          variant={notGoingSelected ? "destructive" : "outline"}
-          size="sm"
-          disabled={isLoading}
-          onClick={() => onSet(row, "Not Going")}
-        >
-          {isLoading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <X className={`mr-2 h-4 w-4 ${notGoingIconClass}`} />
-          )}
-          Won't Attend
-        </Button>
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
+        {/* Mobile toggle style */}
+        <div className="flex items-center justify-between gap-3 rounded-lg border bg-secondary/30 px-3 py-2 sm:hidden">
+          <span className="text-sm font-medium text-foreground">Will attend</span>
+          <Switch
+            checked={goingSelected}
+            disabled={isLoading}
+            onCheckedChange={(checked) => onSet(row, checked ? "Going" : "Not Going")}
+            className="data-[state=checked]:bg-primary"
+          />
+        </div>
+
+        {/* Desktop buttons */}
+        <div className="hidden items-center gap-2 sm:flex">
+          <Button
+            variant={goingSelected ? "default" : "outline"}
+            size="sm"
+            disabled={isLoading}
+            onClick={() => onSet(row, "Going")}
+          >
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Check className={`mr-2 h-4 w-4 ${goingIconClass}`} />
+            )}
+            Will Attend
+          </Button>
+          <Button
+            variant={notGoingSelected ? "destructive" : "outline"}
+            size="sm"
+            disabled={isLoading}
+            onClick={() => onSet(row, "Not Going")}
+          >
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <X className={`mr-2 h-4 w-4 ${notGoingIconClass}`} />
+            )}
+            Won't Attend
+          </Button>
+        </div>
       </div>
     );
   };
@@ -191,7 +206,7 @@ const RSVPSection = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="container mx-auto max-w-3xl"
+        className="container mx-auto max-w-4xl"
       >
         <div className="mb-12 text-center">
           <h2 className="mb-4 text-5xl font-bold text-foreground md:text-6xl">
@@ -202,7 +217,7 @@ const RSVPSection = () => {
           </p>
         </div>
 
-        <Card className="border-none bg-card p-8 shadow-xl md:p-12">
+        <Card className="border-none bg-card p-6 shadow-xl sm:p-8 md:p-12">
           <>
               <div className="mb-8">
                 <div className="mb-4 rounded-md border border-black/10 bg-secondary/20 p-3 text-sm text-muted-foreground">
@@ -245,7 +260,6 @@ const RSVPSection = () => {
                           key={g.groupId}
                           className="flex w-full items-center gap-3 rounded-md p-3 text-left transition-colors hover:bg-secondary"
                         >
-                          <User className="h-5 w-5 text-primary" />
                           <div className="flex-1">
                             <p className="font-medium">{g.groupName}</p>
                           </div>

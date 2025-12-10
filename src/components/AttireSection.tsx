@@ -22,20 +22,26 @@ const AttireSection = () => {
   ];
 
 
-  const inspiration = {
-    women: [
-      { title: "Soft florals", image: women1 },
-      { title: "Champagne satin", image: women2 },
-      { title: "Romantic sleeves", image: women3 },
-      { title: "Mixed neutrals", image: women4 },
-    ],
-    men: [
-      { title: "Sage suiting", image: men1 },
-      { title: "Black-tie optional", image: men2 },
-      { title: "Modern charcoal", image: men3 },
-      { title: "Casual luxe", image: men4 },
-    ],
-  };
+  const inspirationGroups = [
+    {
+      label: "For her",
+      looks: [
+        { title: "Soft florals", image: women1 },
+        { title: "Champagne satin", image: women2 },
+        { title: "Romantic sleeves", image: women3 },
+        { title: "Mixed neutrals", image: women4 },
+      ],
+    },
+    {
+      label: "For him",
+      looks: [
+        { title: "Sage suiting", image: men1 },
+        { title: "Black-tie optional", image: men2 },
+        { title: "Modern charcoal", image: men3 },
+        { title: "Casual luxe", image: men4 },
+      ],
+    },
+  ];
 
   return (
     <section id="attire-section" className="py-20 px-4" style={{ background: "var(--gradient-sage)" }}>
@@ -59,9 +65,6 @@ const AttireSection = () => {
           <h2 className="mb-3 text-5xl font-bold text-foreground md:text-6xl">
             Attire & Colors
           </h2>
-          <p className="text-lg text-muted-foreground">
-            Formal, garden-chic, and softly elevated — here’s the palette and inspiration.
-          </p>
         </div>
 
         <div className="space-y-8">
@@ -74,19 +77,19 @@ const AttireSection = () => {
             <Card className="relative overflow-hidden border-none bg-card/90 p-8 shadow-xl backdrop-blur">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/10 to-transparent" />
               <div className="relative space-y-8">
-                <div className="flex flex-wrap items-start gap-3">
+                <div className="grid gap-6 md:grid-cols-2 md:items-center">
                   <div className="space-y-3">
-                  <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Dress Code</p>
-                    <h3 className="text-2xl font-semibold text-foreground">Semi-Formal or Formal</h3>
+                    <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Dress Code</p>
+                    <h3 className="text-2xl font-semibold text-foreground">Semi-Formal</h3>
                     <div className="space-y-2 text-base text-muted-foreground">
-                      <p>We invite you to dress in your finest semi-formal to formal wear. Feel free to echo the sage green color palette setting with soft tones and simple accents.</p>
+                      <p>
+                        We invite you to dress in your finest semi-formal to formal wear. Feel free to echo the sage green
+                        color palette setting with soft tones and simple accents.
+                      </p>
                     </div>
                   </div>
-                </div>
 
-                <div className="space-y-5 pb-4 ">
-
-                  <div className="mt-4 flex flex-wrap justify-center gap-4 sm:grid sm:grid-cols-5 sm:gap-5">
+                  <div className="flex flex-wrap items-center justify-center gap-4 sm:grid sm:grid-cols-5 sm:gap-5 sm:place-items-center">
                     {colorPalette.map((tone, index) => (
                       <motion.div
                         key={tone.name}
@@ -120,91 +123,49 @@ const AttireSection = () => {
               <div className="mb-4 space-y-1">
                 <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Inspiration</p>
                 <h3 className="text-2xl font-semibold text-foreground">What to wear</h3>
-                <p className="text-sm text-muted-foreground">Mood-board snapshots to match the palette.</p>
               </div>
 
               <div className="space-y-6">
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">For her</p>
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-                    {inspiration.women.map((look, index) => (
-                      <Dialog key={look.title}>
-                        <DialogTrigger asChild>
-                          <motion.button
-                            type="button"
-                            initial={{ opacity: 0, y: 16 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.35, delay: index * 0.04 }}
-                            className="group relative overflow-hidden rounded-2xl border bg-muted/40 shadow-sm"
-                          >
-                            <img
-                              src={look.image}
-                              alt={look.title}
-                              className="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                          </motion.button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-3xl overflow-hidden p-0">
-                          <DialogClose asChild>
-                            <button type="button" className="w-full">
+                {inspirationGroups.map((group) => (
+                  <div key={group.label} className="space-y-3">
+                    <p className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                      {group.label}
+                    </p>
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+                      {group.looks.map((look, index) => (
+                        <Dialog key={look.title}>
+                          <DialogTrigger asChild>
+                            <motion.button
+                              type="button"
+                              initial={{ opacity: 0, y: 16 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.35, delay: index * 0.04 }}
+                              className="group relative overflow-hidden rounded-2xl border bg-muted/40 shadow-sm"
+                            >
                               <img
                                 src={look.image}
                                 alt={look.title}
-                                className="w-full max-h-[80vh] object-cover"
+                                className="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                               />
-                            </button>
-                          </DialogClose>
-                          <div className="p-4">
-                            <p className="text-lg font-semibold text-foreground">{look.title}</p>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                    ))}
+                            </motion.button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-3xl overflow-hidden p-0">
+                            <DialogClose asChild>
+                              <button type="button" className="w-full">
+                                <img
+                                  src={look.image}
+                                  alt={look.title}
+                                  className="w-full max-h-[80vh] object-cover"
+                                />
+                              </button>
+                            </DialogClose>
+                          </DialogContent>
+                        </Dialog>
+                      ))}
+                    </div>
                   </div>
-                </div>
-
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">For him</p>
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-                    {inspiration.men.map((look, index) => (
-                      <Dialog key={look.title}>
-                        <DialogTrigger asChild>
-                          <motion.button
-                            type="button"
-                            initial={{ opacity: 0, y: 16 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.35, delay: index * 0.04 }}
-                            className="group relative overflow-hidden rounded-2xl border bg-muted/40 shadow-sm"
-                          >
-                            <img
-                              src={look.image}
-                              alt={look.title}
-                              className="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                          </motion.button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-3xl overflow-hidden p-0">
-                          <DialogClose asChild>
-                            <button type="button" className="w-full">
-                              <img
-                                src={look.image}
-                                alt={look.title}
-                                className="w-full max-h-[80vh] object-cover"
-                              />
-                            </button>
-                          </DialogClose>
-                          <div className="p-4">
-                            <p className="text-lg font-semibold text-foreground">{look.title}</p>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </Card>
           </motion.div>
