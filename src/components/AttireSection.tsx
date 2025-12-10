@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import { Palette, Sparkles } from "lucide-react";
 import { Card } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
 
 import men1 from "@/assets/attire/men-1.jpg";
@@ -26,16 +24,16 @@ const AttireSection = () => {
 
   const inspiration = {
     women: [
-      { title: "Soft florals", note: "Flowy fabrics, sage accessories", image: women1 },
-      { title: "Champagne satin", note: "Bias cuts with pearl jewelry", image: women2 },
-      { title: "Romantic sleeves", note: "Light sage & airy movement", image: women3 },
-      { title: "Mixed neutrals", note: "Blush undertones + gold accents", image: women4 },
+      { title: "Soft florals", image: women1 },
+      { title: "Champagne satin", image: women2 },
+      { title: "Romantic sleeves", image: women3 },
+      { title: "Mixed neutrals", image: women4 },
     ],
     men: [
-      { title: "Sage suiting", note: "Monochrome with texture", image: men1 },
-      { title: "Black-tie optional", note: "Ivory shirt, sage tie pocket square", image: men2 },
-      { title: "Modern charcoal", note: "Sage tie, brown leather details", image: men3 },
-      { title: "Casual luxe", note: "Open collar, linen layers in sage", image: men4 },
+      { title: "Sage suiting", image: men1 },
+      { title: "Black-tie optional", image: men2 },
+      { title: "Modern charcoal", image: men3 },
+      { title: "Casual luxe", image: men4 },
     ],
   };
 
@@ -66,7 +64,7 @@ const AttireSection = () => {
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="space-y-8">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -83,26 +81,12 @@ const AttireSection = () => {
                     <div className="space-y-2 text-base text-muted-foreground">
                       <p>We invite you to dress in your finest semi-formal to formal wear. Feel free to echo the sage green color palette setting with soft tones and simple accents.</p>
                     </div>
-                    <div className="mt-5 rounded-lg bg-accent/20 p-5 text-sm text-muted-foreground">
-                      <strong className="text-foreground">Kind note:</strong> Please avoid wearing white, ivory, or
-                      off-white to let our bride shine ✨
-                    </div>
                   </div>
                 </div>
 
                 <div className="space-y-5 pb-4 ">
-                  <div className="flex items-center gap-3 pb-4">
-                    <Palette className="h-5 w-5 text-primary" />
-                    <div>
-                      <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Color direction</p>
-                      <h4 className="text-xl font-semibold text-foreground">Sage, champagne, and soft neutrals</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Feel free to incorporate any of these hues into your look.
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="mt-4 flex flex-wrap justify-center gap-4 sm:gap-5">
+                  <div className="mt-4 flex flex-wrap justify-center gap-4 sm:grid sm:grid-cols-5 sm:gap-5">
                     {colorPalette.map((tone, index) => (
                       <motion.div
                         key={tone.name}
@@ -110,7 +94,7 @@ const AttireSection = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.35, delay: index * 0.05 }}
-                        className="flex basis-[30%] flex-col items-center justify-center sm:basis-[28%]"
+                        className="flex flex-col items-center justify-center"
                       >
                         <span
                           className="inline-block h-14 w-14 rounded-full ring-2 ring-border shadow-lg"
@@ -133,23 +117,16 @@ const AttireSection = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <Card className="overflow-hidden border-none bg-card/90 p-8 shadow-xl backdrop-blur">
-              <Tabs defaultValue="women" className="w-full">
-                <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Inspiration</p>
-                    <h3 className="text-2xl font-semibold text-foreground">What to wear</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Mood-board snapshots to match the palette.
-                    </p>
-                  </div>
-                  <TabsList>
-                    <TabsTrigger value="women">For her</TabsTrigger>
-                    <TabsTrigger value="men">For him</TabsTrigger>
-                  </TabsList>
-                </div>
+              <div className="mb-4 space-y-1">
+                <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Inspiration</p>
+                <h3 className="text-2xl font-semibold text-foreground">What to wear</h3>
+                <p className="text-sm text-muted-foreground">Mood-board snapshots to match the palette.</p>
+              </div>
 
-                <TabsContent value="women">
-                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">For her</p>
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
                     {inspiration.women.map((look, index) => (
                       <Dialog key={look.title}>
                         <DialogTrigger asChild>
@@ -167,12 +144,6 @@ const AttireSection = () => {
                               className="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                            <div className="absolute inset-x-0 bottom-0 p-4 text-left text-white">
-                              <Badge variant="secondary" className="mb-2 rounded-full bg-white/80 text-foreground">
-                                {look.title}
-                              </Badge>
-                              <p className="text-sm text-white/90">{look.note}</p>
-                            </div>
                           </motion.button>
                         </DialogTrigger>
                         <DialogContent className="max-w-3xl overflow-hidden p-0">
@@ -187,16 +158,16 @@ const AttireSection = () => {
                           </DialogClose>
                           <div className="p-4">
                             <p className="text-lg font-semibold text-foreground">{look.title}</p>
-                            <p className="text-sm text-muted-foreground">{look.note}</p>
                           </div>
                         </DialogContent>
                       </Dialog>
                     ))}
                   </div>
-                </TabsContent>
+                </div>
 
-                <TabsContent value="men">
-                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">For him</p>
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
                     {inspiration.men.map((look, index) => (
                       <Dialog key={look.title}>
                         <DialogTrigger asChild>
@@ -214,12 +185,6 @@ const AttireSection = () => {
                               className="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-                            <div className="absolute inset-x-0 bottom-0 p-4 text-left text-white">
-                              <Badge variant="secondary" className="mb-2 rounded-full bg-white/80 text-foreground">
-                                {look.title}
-                              </Badge>
-                              <p className="text-sm text-white/90">{look.note}</p>
-                            </div>
                           </motion.button>
                         </DialogTrigger>
                         <DialogContent className="max-w-3xl overflow-hidden p-0">
@@ -234,14 +199,13 @@ const AttireSection = () => {
                           </DialogClose>
                           <div className="p-4">
                             <p className="text-lg font-semibold text-foreground">{look.title}</p>
-                            <p className="text-sm text-muted-foreground">{look.note}</p>
                           </div>
                         </DialogContent>
                       </Dialog>
                     ))}
                   </div>
-                </TabsContent>
-              </Tabs>
+                </div>
+              </div>
             </Card>
           </motion.div>
         </div>
