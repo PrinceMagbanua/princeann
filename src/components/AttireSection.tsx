@@ -78,37 +78,20 @@ const AttireSection = () => {
               <div className="relative space-y-8">
                 <div className="flex flex-wrap items-start gap-3">
                   <div className="space-y-3">
-                    <h3 className="text-2xl font-semibold text-foreground">Dress Code</h3>
+                  <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Dress Code</p>
+                    <h3 className="text-2xl font-semibold text-foreground">Semi-Formal or Formal</h3>
                     <div className="space-y-2 text-base text-muted-foreground">
-                      <p>
-                        <strong className="text-foreground">Formal Attire</strong>
-                      </p>
-                      <p>We invite you to dress in your finest semi-formal to formal wear.</p>
-                      <p>Think clean lines, light layers, and details that echo our garden setting.</p>
+                      <p>We invite you to dress in your finest semi-formal to formal wear. Feel free to echo the sage green color palette setting with soft tones and simple accents.</p>
                     </div>
-                    <div className="grid gap-3 rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
-                      <div>
-                        <p className="font-semibold text-foreground">What works great</p>
-                        <p>Flowy dresses or jumpsuits, tailored suits, soft metallic accents.</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">Fabrics</p>
-                        <p>Breezy chiffons, linen blends, silk, and crepe for warm weather comfort.</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">Footwear</p>
-                        <p>Block heels or dressy flats for lawn-friendly steps.</p>
-                      </div>
-                    </div>
-                    <div className="mt-4 rounded-lg bg-accent/20 p-4 text-sm text-muted-foreground">
+                    <div className="mt-5 rounded-lg bg-accent/20 p-5 text-sm text-muted-foreground">
                       <strong className="text-foreground">Kind note:</strong> Please avoid wearing white, ivory, or
                       off-white to let our bride shine ✨
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
+                <div className="space-y-5 pb-4 ">
+                  <div className="flex items-center gap-3 pb-4">
                     <Palette className="h-5 w-5 text-primary" />
                     <div>
                       <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Color direction</p>
@@ -119,7 +102,7 @@ const AttireSection = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-5 gap-4 sm:gap-5">
+                  <div className="mt-4 flex flex-wrap justify-center gap-4 sm:gap-5">
                     {colorPalette.map((tone, index) => (
                       <motion.div
                         key={tone.name}
@@ -127,13 +110,14 @@ const AttireSection = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.35, delay: index * 0.05 }}
-                        className="flex items-center justify-center"
+                        className="flex basis-[30%] flex-col items-center justify-center sm:basis-[28%]"
                       >
                         <span
                           className="inline-block h-14 w-14 rounded-full ring-2 ring-border shadow-lg"
                           style={{ backgroundColor: tone.color }}
                           aria-label={tone.name}
                         />
+                        <p className="mt-2 text-xs font-medium text-foreground/80">{tone.name}</p>
                       </motion.div>
                     ))}
                   </div>
@@ -155,7 +139,7 @@ const AttireSection = () => {
                     <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Inspiration</p>
                     <h3 className="text-2xl font-semibold text-foreground">What to wear</h3>
                     <p className="text-sm text-muted-foreground">
-                      Mood-board snapshots to match the palette. Save what you love.
+                      Mood-board snapshots to match the palette.
                     </p>
                   </div>
                   <TabsList>
