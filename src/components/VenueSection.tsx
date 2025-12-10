@@ -23,7 +23,7 @@ const VenueSection = () => {
         <img
           src={venueImage}
           alt="Hampton Court Venue"
-          className="h-full w-full object-cover"
+          className="h-full w-full object-bottom object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-hero-overlay/40 via-transparent to-hero-overlay/40" />
       </div>
@@ -41,7 +41,7 @@ const VenueSection = () => {
         <img
           src={venueImage}
           alt="Hampton Court Venue blur overlay"
-          className="h-full w-full object-cover blur-[3px]"
+          className="h-full w-full object-cover object-bottom blur-[3px]"
         />
       </div>
 
