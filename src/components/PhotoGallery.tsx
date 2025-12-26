@@ -1,8 +1,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import gallery1 from "@/assets/gallery-1.jpg";
-import gallery2 from "@/assets/gallery-2.jpg";
-import gallery3 from "@/assets/gallery-3.jpg";
+import lrwn4041 from "@/assets/photos/LRWN4041.jpg";
+import lrwn4124 from "@/assets/photos/LRWN4124.jpg";
+import lrwn4144 from "@/assets/photos/LRWN4144.jpg";
 
 const PhotoGallery = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -42,6 +42,14 @@ const PhotoGallery = () => {
 
   const contentY = useTransform(textScrollProgress, [0.2, 0.5, 0.8, 1], [40, 0, 0, -10]);
   const contentOpacity = useTransform(textScrollProgress, [0.2, 0.4, 0.9, 1], [0, 1, 1, 0.8]);
+
+  const photos = [
+    { src: lrwn4144, alt: "Sunlit portrait", caption: "Sunlit moments" },
+    { src: lrwn4124, alt: "Candid look", caption: "Quiet glances" },
+    { src: lrwn4041, alt: "City stroll", caption: "City strolls" },
+  ];
+
+  const yTransforms = [y1, y2, y3];
 
   return (
     <section ref={containerRef} className="py-20 px-4 bg-background relative overflow-hidden">
@@ -122,149 +130,46 @@ const PhotoGallery = () => {
           transition={{ duration: 1, delay: 0.3 }}
           className="mb-16"
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            <motion.div
-              style={{ y: isMobile ? 0 : y1 }}
-              initial={{ opacity: 0, scale: 0.7, rotateX: -15 }}
-              whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{
-                duration: 0.8,
-                type: "spring",
-                stiffness: 100,
-                damping: 15
-              }}
-              whileHover={{
-                scale: 1.05,
-                rotateY: 5,
-                transition: { duration: 0.3 }
-              }}
-              className="relative overflow-hidden rounded-2xl shadow-2xl group cursor-pointer"
-            >
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="relative h-[500px] overflow-hidden"
-              >
-                <img
-                  src={gallery1}
-                  alt="Prince and Ann together"
-                  className="h-full w-full object-cover"
-                />
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"
-                />
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileHover={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.1 }}
-                  className="absolute bottom-4 left-4 right-4"
-                >
-                  <p className="text-white text-sm font-medium drop-shadow-lg">
-                    First adventures
-                  </p>
-                </motion.div>
-              </motion.div>
-            </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+            {photos.slice(0, 3).map((photo, idx) => {
+              const yTransform = yTransforms[idx % yTransforms.length];
+              const delay = 0.15 * idx;
+              const hoverTilt = idx % 2 === 0 ? 5 : -5;
 
-            <motion.div
-              style={{ y: isMobile ? 0 : y2 }}
-              initial={{ opacity: 0, scale: 0.7, rotateX: -15 }}
-              whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{
-                duration: 0.8,
-                delay: 0.2,
-                type: "spring",
-                stiffness: 100,
-                damping: 15
-              }}
-              whileHover={{
-                scale: 1.05,
-                rotateY: -5,
-                transition: { duration: 0.3 }
-              }}
-              className="relative overflow-hidden rounded-2xl shadow-2xl group cursor-pointer"
-            >
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="relative h-[500px] overflow-hidden"
-              >
-                <img
-                  src={gallery2}
-                  alt="Prince and Ann moments"
-                  className="h-full w-full object-cover"
-                />
+              return (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"
-                />
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileHover={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.1 }}
-                  className="absolute bottom-4 left-4 right-4"
+                  key={photo.src}
+                  style={{ y: isMobile ? 0 : yTransform }}
+                  initial={{ opacity: 0, scale: 0.7, rotateX: -15 }}
+                  whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  transition={{
+                    duration: 0.8,
+                    delay,
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 15
+                  }}
+                  whileHover={{
+                    scale: 1.05,
+                    rotateY: hoverTilt,
+                    transition: { duration: 0.3 }
+                  }}
+                  className="relative overflow-hidden rounded-2xl shadow-2xl group cursor-pointer"
                 >
-                  <p className="text-white text-sm font-medium drop-shadow-lg">
-                    Beautiful memories
-                  </p>
+                  <div className="relative h-[420px] md:h-[500px] overflow-hidden">
+                    <img
+                      src={photo.src}
+                      alt={photo.alt}
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                    <div className="absolute bottom-4 left-4 right-4">
+                    </div>
+                  </div>
                 </motion.div>
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              style={{ y: isMobile ? 0 : y3 }}
-              initial={{ opacity: 0, scale: 0.7, rotateX: -15 }}
-              whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{
-                duration: 0.8,
-                delay: 0.4,
-                type: "spring",
-                stiffness: 100,
-                damping: 15
-              }}
-              whileHover={{
-                scale: 1.05,
-                rotateY: 5,
-                transition: { duration: 0.3 }
-              }}
-              className="relative overflow-hidden rounded-2xl shadow-2xl group cursor-pointer"
-            >
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="relative h-[500px] overflow-hidden"
-              >
-                <img
-                  src={gallery3}
-                  alt="Prince and Ann celebration"
-                  className="h-full w-full object-cover"
-                />
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"
-                />
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileHover={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.1 }}
-                  className="absolute bottom-4 left-4 right-4"
-                >
-                  <p className="text-white text-sm font-medium drop-shadow-lg">
-                    Forever begins
-                  </p>
-                </motion.div>
-              </motion.div>
-            </motion.div>
+              );
+            })}
           </div>
         </motion.div>
       </motion.div>

@@ -222,7 +222,15 @@ const RSVPSection = () => {
                   <p className="font-medium text-foreground">Please Note:</p>
                   <p>
                     Due to venue limitations and family size, we’ve made the difficult decision to keep our
-                    guest list to family and close friends.
+                    guest list to family and close friends. Please RSVP before January 20, 2026,{" "}
+                    <a
+                      className="font-semibold text-primary underline-offset-4 hover:underline"
+                      href="data:text/calendar;charset=utf-8,BEGIN:VCALENDAR%0AVERSION:2.0%0APRODID:-//Prince%20%26%20Ann//RSVP%20Reminder//EN%0ABEGIN:VEVENT%0AUID:rsvp-reminder-20260120%0ADTSTAMP:20251226T000000Z%0ASUMMARY:RSVP%20Deadline%20-%20Prince%20%26%20Ann%0ADESCRIPTION:Please%20RSVP%20before%2020%20January%202026.%0ADTSTART;VALUE=DATE:20260120%0ADTEND;VALUE=DATE:20260121%0AEND:VEVENT%0AEND:VCALENDAR"
+                      download="Prince-Ann-RSVP-Reminder.ics"
+                    >
+                      Set a reminder
+                    </a>
+                    .
                   </p>
                 </div>
                 <label className="mb-2 block text-sm font-medium">

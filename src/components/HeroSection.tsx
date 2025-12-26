@@ -1,6 +1,12 @@
+import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import heroCoupleImage from "@/assets/hero-couple.jpg";
+import banner1 from "@/assets/photos/banner-1.jpg";
+import banner2 from "@/assets/photos/banner-2.jpg";
+import banner3 from "@/assets/photos/banner-3.jpg";
+import banner4 from "@/assets/photos/banner-4.jpg";
 import { Button } from "./ui/button";
+
+const heroImages = [banner1, banner2, banner3, banner4];
 
 const HeroSection = () => {
   const { scrollY } = useScroll();
@@ -12,6 +18,15 @@ const HeroSection = () => {
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(smoothY, [0, 300], [1, 0]);
   const maskY = useTransform(smoothY, [0, 300], ["0%", "100%"]);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % heroImages.length);
+    }, 12000);
+    return () => clearInterval(interval);
+  }, []);
 
   const scrollToRSVP = () => {
     // Start background music on RSVP click
@@ -41,15 +56,24 @@ const HeroSection = () => {
         style={{ y }}
         className="absolute inset-0 parallax"
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 1.2 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${heroCoupleImage})`,
-          }}
-        />
+        <div className="absolute inset-0">
+          {heroImages.map((image, idx) => {
+            const isActive = idx === activeIndex;
+            return (
+              <motion.div
+                key={image}
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${image})` }}
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{
+                  opacity: isActive ? 1 : 0,
+                  scale: isActive ? 1 : 1.02,
+                }}
+                transition={{ duration: 3, ease: "easeInOut" }}
+              />
+            );
+          })}
+        </div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

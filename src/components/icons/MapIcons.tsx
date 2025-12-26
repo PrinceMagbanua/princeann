@@ -29,3 +29,4 @@ export const WazeIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+
