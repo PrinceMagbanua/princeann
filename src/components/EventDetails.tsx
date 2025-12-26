@@ -113,7 +113,7 @@ const EventDetails = () => {
                       <span>Google Maps</span>
                     </a>
                     <a
-                      href="https://waze.com/ul?ll=14.4086,121.0398&navigate=yes"
+                      href="https://ul.waze.com/ul?ll=14.43501270%2C121.04214907&navigate=yes&zoom=17&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Open location in Waze"
@@ -152,7 +152,7 @@ const EventDetails = () => {
                       <span>Google Maps</span>
                     </a>
                     <a
-                      href="https://waze.com/ul?ll=14.4378,121.0416&navigate=yes"
+                      href="https://ul.waze.com/ul?ll=14.43987523%2C121.03635550&navigate=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Open location in Waze"

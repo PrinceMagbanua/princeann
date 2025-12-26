@@ -64,14 +64,15 @@ const RSVPSection = () => {
 
   const filteredGroups = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    if (!q) return [] as Group[];
+    if (q.length < 3) return [] as Group[];
     return groups.filter((g) => {
       if (g.groupName.toLowerCase().includes(q)) return true;
       return g.members.some((m) => m.name.toLowerCase().includes(q));
     });
   }, [groups, searchQuery]);
 
-  const resultsOpen = !!searchQuery && filteredGroups.length > 0;
+  const resultsOpen = searchQuery.trim().length >= 3 && filteredGroups.length > 0;
+  const needsMoreChars = searchQuery.trim().length > 0 && searchQuery.trim().length < 3;
 
   const handleSelectGuest = (g: Group) => {
     const memberNames = g.members.map((m) => m.name);
@@ -246,6 +247,11 @@ const RSVPSection = () => {
                     className="pl-10 h-14 text-base sm:text-lg"
                   />
                 </div>
+                {needsMoreChars && (
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Enter at least 3 letters to see your name.
+                  </p>
+                )}
               </div>
 
               <div
