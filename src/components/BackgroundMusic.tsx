@@ -13,7 +13,7 @@ const BackgroundMusic = () => {
     if (!audioRef.current) return;
     audioRef.current.loop = true;
     audioRef.current.muted = false;
-    audioRef.current.volume = 0.2;
+    audioRef.current.volume = 0.5;
   }, []);
 
   // Allow other components (e.g., HeroSection) to start music
@@ -52,7 +52,7 @@ const BackgroundMusic = () => {
     const audio = audioRef.current;
     if (!audio) return;
     try {
-      audio.volume = 0.1;
+      audio.volume = 0.5;
       await audio.play();
       setIsPlaying(true);
     } catch {

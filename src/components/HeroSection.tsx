@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import banner1 from "@/assets/photos/banner-1.jpg";
+// import banner1 from "@/assets/photos/banner-1.jpg";
 import banner2 from "@/assets/photos/banner-2.jpg";
-import banner3 from "@/assets/photos/banner-3.jpg";
-import banner4 from "@/assets/photos/banner-4.jpg";
+// import banner3 from "@/assets/photos/banner-3.jpg";
+// import banner4 from "@/assets/photos/banner-4.jpg";
 import { Button } from "./ui/button";
 
-const heroImages = [banner1, banner2, banner3, banner4];
+// const heroImages = [banner1, banner2, banner3, banner4];
+const heroImages = [banner2];
 
 const HeroSection = () => {
   const { scrollY } = useScroll();

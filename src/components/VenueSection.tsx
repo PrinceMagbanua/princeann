@@ -1,7 +1,7 @@
 import venueImage from "@/assets/taller.png";
 import venueFront from "@/assets/taller-venue-front.png";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const VenueSection = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -11,13 +11,21 @@ const VenueSection = () => {
   });
 
   // Parallax mappings (subtle, to feel like a delay)
-  // Increased range for more dramatic movement, and will use larger text (see where text is rendered).
-  // Also, to make it appear "higher" at start, start value is negative (up), end value is positive (down)
-  const textY = useTransform(scrollYProgress, [0, 1], [-450, 100]);
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    setIsMobile(mq.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // Responsive parallax range: shallower on mobile
+  const textY = useTransform(scrollYProgress, [0, 1], isMobile ? [-300, 100] : [-610, 100]);
   const foregroundY = useTransform(scrollYProgress, [0, 1], [0,0]);
 
   return (
-    <section ref={sectionRef} className="relative h-[80vh] md:h-[900px] overflow-hidden">
+    <section ref={sectionRef} className="relative h-[70vh] md:h-[1100px] overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <img
