@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import lrwn4041 from "@/assets/photos/LRWN4041.jpg";
+import lrwn4041 from "@/assets/photos/LRWN4622.jpg";
 import lrwn4124 from "@/assets/photos/LRWN4124.jpg";
 import lrwn4144 from "@/assets/photos/LRWN4144.jpg";
 
