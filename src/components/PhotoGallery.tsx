@@ -44,8 +44,8 @@ const PhotoGallery = () => {
   const contentOpacity = useTransform(textScrollProgress, [0.2, 0.4, 0.9, 1], [0, 1, 1, 0.8]);
 
   const photos = [
-    { src: lrwn4144, alt: "Sunlit portrait", caption: "Sunlit moments" },
     { src: lrwn4124, alt: "Candid look", caption: "Quiet glances" },
+    { src: lrwn4144, alt: "Sunlit portrait", caption: "Sunlit moments" },
     { src: lrwn4041, alt: "City stroll", caption: "City strolls" },
   ];
 
