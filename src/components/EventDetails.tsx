@@ -82,7 +82,7 @@ const EventDetails = () => {
               <div className="absolute left-4 top-1/2 -translate-y-1/2 md:static md:transform-none md:left-0 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
                 <Calendar className="h-5 w-5 text-primary" />
               </div>
-              <div className="flex-1 flex flex-col items-center text-center md:items-start md:text-left pl-12 md:pl-0">
+              <div className="flex-1 flex flex-col items-start text-left md:items-start md:text-left pl-12 md:pl-0">
                 <span className="text-sm font-medium text-muted-foreground">Saturday</span>
                 <span className="text-xl md:text-2xl font-bold tracking-wide text-foreground">
                   February 7, 2026

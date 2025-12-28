@@ -41,7 +41,7 @@ const Footer = () => {
           </motion.div>
           <h2 className="text-4xl font-bold mb-4">Prince & Ann</h2>
           <p className="text-xl font-light opacity-90">
-            Join us in celebrating our love
+            #AnnFinallyFoundHerPrince
           </p>
         </div>
 
