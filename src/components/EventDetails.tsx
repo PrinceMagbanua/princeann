@@ -75,7 +75,7 @@ const EventDetails = () => {
         className="container mx-auto max-w-5xl"
       >
         {/* Section heading with single date */}
-        <motion.div variants={itemVariants} className="mb-8 md:mb-10 text-center">
+        <motion.div variants={itemVariants} className="mb-4 md:mb-8 text-center">
           <h2 className="mb-2 text-4xl md:text-5xl font-bold text-foreground">The Celebration</h2>
           <div className="mt-4 mx-auto w-full max-w-sm md:max-w-xs">
             <div className="relative flex items-center justify-center md:justify-start md:gap-6 rounded-xl bg-white/95 px-5 py-4 shadow-sm">
