@@ -93,6 +93,21 @@ const HeroSection = () => {
       >
         <div className="px-4">
           <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.1 }}
+          >
+            <span
+              className="block text-xs tracking-wide text-[#00ff5e] mb-2 font-bold"
+              style={{
+                letterSpacing: "0.10em",
+                textShadow: "rgb(18 0 0 / 23%) 0px 1px 4px",
+              }}
+            >
+              #AnnFinallyFoundHerPrince
+            </span>
+          </motion.div>
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}

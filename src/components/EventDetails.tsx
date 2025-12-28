@@ -77,15 +77,25 @@ const EventDetails = () => {
         {/* Section heading with single date */}
         <motion.div variants={itemVariants} className="mb-8 md:mb-10 text-center">
           <h2 className="mb-2 text-4xl md:text-5xl font-bold text-foreground">The Celebration</h2>
-        <div className="mt-4 inline-flex flex-col-reverse items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-xl md:text-xl shadow-sm ring-3 ring-white/10 font-bold sm:flex-row sm:gap-3">
-            <Calendar className="h-5 w-5  text-primaryfont-bold" />
-            <span className="text-center">Saturday, February 7, 2026</span>
+          <div className="mt-4 mx-auto w-full max-w-sm md:max-w-xs">
+            <div className="relative flex items-center justify-center md:justify-start md:gap-6 rounded-xl bg-white/95 px-5 py-4 shadow-sm">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 md:static md:transform-none md:left-0 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                <Calendar className="h-5 w-5 text-primary" />
+              </div>
+              <div className="flex-1 flex flex-col items-center text-center md:items-start md:text-left pl-12 md:pl-0">
+                <span className="text-sm font-medium text-muted-foreground">Saturday</span>
+                <span className="text-xl md:text-2xl font-bold tracking-wide text-foreground">
+                  February 7, 2026
+                </span>
+              </div>
+            </div>
           </div>
         </motion.div>
 
         {/* Single compact card with two columns */}
         <motion.div variants={itemVariants}>
-          <Card className="border-none bg-card/90 p-6 md:p-8 shadow-2xl">
+          <div className="mx-auto w-full max-w-sm md:max-w-none">
+            <Card className="border-none bg-card/90 p-6 md:p-8 shadow-2xl">
             <div className="grid gap-6 md:gap-10 md:grid-cols-2">
               {/* Church Ceremony */}
               <div className="flex items-start gap-4">
@@ -165,7 +175,8 @@ const EventDetails = () => {
                 </div>
               </div>
             </div>
-          </Card>
+            </Card>
+          </div>
         </motion.div>
       </motion.div>
     </section>
