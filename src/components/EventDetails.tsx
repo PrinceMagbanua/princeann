@@ -109,7 +109,7 @@ const EventDetails = () => {
                   <p className="text-primary font-medium mb-2 md:mb-3">1:30 PM</p>
                   <div className="text-muted-foreground">
                     <p className="mb-1">Sacred Heart Of Jesus Parish</p>
-                    <p className="text-sm">Muntinlupa</p>
+                    <p className="text-sm">Alabang, Muntinlupa</p>
                   </div>
                   <div className="mt-4 flex gap-2 flex-wrap">
                     <a
