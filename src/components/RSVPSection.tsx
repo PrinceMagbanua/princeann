@@ -207,7 +207,7 @@ const RSVPSection = () => {
         transition={{ duration: 0.6 }}
         className="container mx-auto max-w-4xl px-0 sm:px-2"
       >
-        <div className="mb-12 text-center">
+        <div className="mb-4 text-center">
           <h2 className="mb-4 text-5xl font-bold text-foreground md:text-6xl">
             RSVP
           </h2>
