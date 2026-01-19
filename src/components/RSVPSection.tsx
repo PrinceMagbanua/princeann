@@ -223,7 +223,7 @@ const RSVPSection = () => {
                   <p className="font-medium text-foreground">Please Note:</p>
                   <p>
                     Due to venue limitations and family size, we’ve made the difficult decision to keep our
-                    guest list to family and close friends. Please RSVP before January 20, 2026.
+                    guest list to family and close friends.
                   </p>
                 </div>
                 <label className="mb-2 block text-sm font-medium">
